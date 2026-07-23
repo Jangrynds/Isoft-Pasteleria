@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="DESKTOP-1N4RHO0" name="Modelo.DAO.CategoriaProductoDAOTest" skipped="0" tests="4" time="0.406" timestamp="2026-07-23T07:04:18">
+<testsuite errors="0" failures="0" hostname="DESKTOP-1N4RHO0" name="Modelo.DAO.DepartamentoDAOTest" skipped="0" tests="2" time="1.922" timestamp="2026-07-23T07:07:16">
   <properties>
     <property name="javac.test.classpath" value="C:\Users\Jangrynds\Downloads\mysql-connector-j-9.5.0\mysql-connector-j-9.5.0.jar:build/classes:..\..\..\..\..\Downloads\hamcrest-core-1.3.jar:..\..\..\..\..\Downloads\junit-4.13.2.jar:C:\Users\Jangrynds\Downloads\byte-buddy-1.14.12.jar:C:\Users\Jangrynds\Downloads\byte-buddy-agent-1.14.12.jar:C:\Users\Jangrynds\Downloads\mockito-core-5.11.0.jar:C:\Users\Jangrynds\Downloads\objenesis-3.3.jar" />
     <property name="java.specification.version" value="24" />
@@ -15,7 +15,7 @@
     <property name="libs.eclipselink.javadoc" value="C:\Program Files\Apache NetBeans\java\modules\ext\docs\jakarta.persistence-2.2.3-doc.zip" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="sun.boot.library.path" value="C:\Program Files\Apache NetBeans\jdk\bin" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Modelo.DAO.CategoriaProductoDAOTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\results\TEST-Modelo.DAO.CategoriaProductoDAOTest.xml crashfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junitvmwatcher8436346035811079600.properties propsfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junit1044502898400350078.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Modelo.DAO.DepartamentoDAOTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\results\TEST-Modelo.DAO.DepartamentoDAOTest.xml crashfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junitvmwatcher3676606401365559292.properties propsfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junit17556455504354086020.properties" />
     <property name="jdk.debug" value="release" />
     <property name="javadoc.use" value="true" />
     <property name="javadoc.notree" value="false" />
@@ -60,7 +60,7 @@
     <property name="jlink.additionalparam" value="" />
     <property name="libs.testng.maven-pom" value="" />
     <property name="org.openide.version" value="deprecated" />
-    <property name="test.includes" value="Modelo/DAO/CategoriaProductoDAOTest.java" />
+    <property name="test.includes" value="Modelo/DAO/DepartamentoDAOTest.java" />
     <property name="run.classpath" value="C:\Users\Jangrynds\Downloads\mysql-connector-j-9.5.0\mysql-connector-j-9.5.0.jar:build/classes" />
     <property name="libs.jaxb.src" value="" />
     <property name="sun.awt.enableExtraMouseButtons" value="true" />
@@ -209,7 +209,7 @@
     <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Jdk14Logger" />
     <property name="file.reference.byte-buddy-1.14.12.jar" value="C:\Users\Jangrynds\Downloads\byte-buddy-1.14.12.jar" />
     <property name="libs.javaee-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee-api-6.0.jar" />
-    <property name="javac.includesfile.binary" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\null29521500" />
+    <property name="javac.includesfile.binary" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\null2090194579" />
     <property name="libs.javaee-api-7.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee-api-7.0.jar" />
     <property name="sun.cpu.isalist" value="amd64" />
     <property name="libs.restapi.maven-pom" value="" />
@@ -329,7 +329,7 @@
     <property name="empty.dir" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\empty" />
     <property name="libs.jakartaee-api-10.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\jakarta.jakartaee-api-10.0.0.jar" />
     <property name="netbeans.user" value="C:\Users\Jangrynds\AppData\Roaming\NetBeans\27" />
-    <property name="javac.includes.binary" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\classes\Modelo\DAO\CategoriaProductoDAOTest.class" />
+    <property name="javac.includes.binary" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\classes\Modelo\DAO\DepartamentoDAOTest.class" />
     <property name="file.separator" value="\" />
     <property name="line.separator" value="&#xd;&#xa;" />
     <property name="javadoc.additionalparam" value="" />
@@ -367,7 +367,7 @@
     <property name="libs.spring-framework500.src" value="" />
     <property name="user.properties.file" value="C:\Users\Jangrynds\AppData\Roaming\NetBeans\27\build.properties" />
     <property name="libs.javaee-api-6.0.src" value="" />
-    <property name="javac.includes" value="Modelo/DAO/CategoriaProductoDAOTest.java" />
+    <property name="javac.includes" value="Modelo/DAO/DepartamentoDAOTest.java" />
     <property name="netbeans.autoupdate.country" value="MX" />
     <property name="java.class.path" value="C:\Users\Jangrynds\Downloads\mysql-connector-j-9.5.0\mysql-connector-j-9.5.0.jar;C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\classes;C:\Users\Jangrynds\Downloads\hamcrest-core-1.3.jar;C:\Users\Jangrynds\Downloads\junit-4.13.2.jar;C:\Users\Jangrynds\Downloads\byte-buddy-1.14.12.jar;C:\Users\Jangrynds\Downloads\byte-buddy-agent-1.14.12.jar;C:\Users\Jangrynds\Downloads\mockito-core-5.11.0.jar;C:\Users\Jangrynds\Downloads\objenesis-3.3.jar;C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\classes;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-launcher.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-junit.jar;C:\Program Files\Apache NetBeans\extide\ant\lib\ant-junit4.jar" />
     <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
@@ -427,7 +427,7 @@
     <property name="libs.metro.javadoc" value="C:\Program Files\Apache NetBeans\enterprise\docs\webservices-api-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-extra-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-extra-api-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-rt-javadoc.jar;C:\Program Files\Apache NetBeans\enterprise\docs\webservices-tools-javadoc.jar" />
     <property name="libs.jakartaee-web-api-9.0.src" value="" />
     <property name="libs.jakartaee-web-api-10.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\jakarta.jakartaee-web-api-10.0.0.jar" />
-    <property name="test.class" value="Modelo.DAO.CategoriaProductoDAOTest" />
+    <property name="test.class" value="Modelo.DAO.DepartamentoDAOTest" />
     <property name="sun.awt.datatransfer.timeout" value="1000" />
     <property name="libs.javaee-web-api-7.0.src" value="" />
     <property name="libs.jakartaee-api-8.0.src" value="" />
@@ -436,10 +436,9 @@
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\Apache NetBeans\enterprise\ant\extra\jspcompile.jar" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
   </properties>
-  <testcase classname="Modelo.DAO.CategoriaProductoDAOTest" name="testObtenerIdCategoria_CaminoExcepcion_CategoriaInexistente" time="0.157" />
-  <testcase classname="Modelo.DAO.CategoriaProductoDAOTest" name="testObtenerIdCategoria_CaminoExcepcion_NombreNulo" time="0.001" />
-  <testcase classname="Modelo.DAO.CategoriaProductoDAOTest" name="testObtenerIdCategoria_CaminoExcepcion_NombreVacio" time="0.0" />
-  <testcase classname="Modelo.DAO.CategoriaProductoDAOTest" name="testObtenerIdCategoria_CaminoFeliz_StubNativo" time="0.001" />
-  <system-out><![CDATA[]]></system-out>
+  <testcase classname="Modelo.DAO.DepartamentoDAOTest" name="testMostrarDepartamentos_CaminoExcepcion_ComboNulo" time="1.079" />
+  <testcase classname="Modelo.DAO.DepartamentoDAOTest" name="testMostrarDepartamentos_CaminoFeliz" time="0.602" />
+  <system-out><![CDATA[Error: java.lang.NullPointerException: Cannot invoke "javax.swing.JComboBox.addItem(Object)" because "cmbDepartamento" is null
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

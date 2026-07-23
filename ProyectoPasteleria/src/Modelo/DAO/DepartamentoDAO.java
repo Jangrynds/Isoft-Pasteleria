@@ -15,11 +15,23 @@ import Modelo.ConexionBD;
  */
 public class DepartamentoDAO {
     
+    // Variable para la conexión (real o simulada)
+    private Connection conexion;
+
+    // Constructor por defecto para el sistema en producción
+    public DepartamentoDAO() {
+        this.conexion = ConexionBD.getConexionBD();
+    }
+
+    // Constructor para inyección de dependencias en pruebas unitarias
+    public DepartamentoDAO(Connection conexion) {
+        this.conexion = conexion;
+    }
+    
     public void mostrarDepartamentos(JComboBox cmbDepartamento){
 
         try{
-
-            Connection con = ConexionBD.getConexionBD();
+            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
             String sql = "SELECT * FROM departamento ORDER BY idDepartamento";
 
