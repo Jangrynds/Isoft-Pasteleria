@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ingri/OneDrive/Documentos/NetBeansProjects/ProyectoPasteleria/src/Modelo/DAO/TarjetaTiempoDAO.java</file>
-            <file>file:/C:/Users/ingri/OneDrive/Documentos/NetBeansProjects/ProyectoPasteleria/src/Modelo/DAO/UsuarioDAO.java</file>
-            <file>file:/C:/Users/ingri/OneDrive/Documentos/NetBeansProjects/ProyectoPasteleria/src/Vista/FrmTarjetaTiempo.java</file>
-            <file>file:/C:/Users/ingri/OneDrive/Documentos/NetBeansProjects/ProyectoPasteleria/src/Modelo/Clases/TarjetaTiempo.java</file>
-            <file>file:/C:/Users/ingri/OneDrive/Documentos/NetBeansProjects/ProyectoPasteleria/src/Vista/FrmEmpleado.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/src/Modelo/DAO/CategoriaProductoDAO.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/test/Modelo/DAO/CategoriaProductoDAOTest.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/project.properties</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/private/private.properties</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/genfiles.properties</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/project.xml</file>
         </group>
     </open-files>
 </project-private>

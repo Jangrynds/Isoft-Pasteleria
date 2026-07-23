@@ -4,7 +4,6 @@
  */
 package Modelo.DAO;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -14,15 +13,28 @@ import javax.swing.JComboBox;
 import java.sql.PreparedStatement;
 /**
  *
- * @author ingri
+ *
  */
 public class CategoriaProductoDAO {
+    
+    // 1. Variable para almacenar la conexión (real o simulada)
+    private Connection conexion;
+
+    // 2. Constructor por defecto (Tu sistema real seguirá usando este automáticamente)
+    public CategoriaProductoDAO() {
+        this.conexion = ConexionBD.getConexionBD();
+    }
+
+    // 3. Constructor para pruebas (Por aquí Mockito inyectará la conexión falsa)
+    public CategoriaProductoDAO(Connection conexion) {
+        this.conexion = conexion;
+    }
     
     public void mostrarMedidasIngredientes(JComboBox JcomboMedidasIngredientes){
 
         try{
-
-            Connection con = ConexionBD.getConexionBD();
+            // Usamos la conexión de la clase (this.conexion)
+            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
             String sql = "SELECT * FROM categoriaproducto ORDER BY idCategoria";
 
@@ -49,8 +61,8 @@ public class CategoriaProductoDAO {
     int idCategoria = 0;
 
     try{
-
-        Connection con = ConexionBD.getConexionBD();
+        // Usamos la conexión de la clase (this.conexion)
+        Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
         String sql =
         "SELECT idCategoria FROM categoriaproducto "
