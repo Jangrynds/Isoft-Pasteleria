@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.DAO;
-
 
 import Modelo.Clases.Empleado;
 import Modelo.ConexionBD;
@@ -19,9 +14,22 @@ import java.sql.PreparedStatement;
  */
 public class EmpleadoDAO {
     
+    // Variable para almacenar la conexión (real o simulada)
+    private Connection conexion;
+
+    // Constructor por defecto para producción
+    public EmpleadoDAO() {
+        this.conexion = ConexionBD.getConexionBD();
+    }
+
+    // Constructor para inyección de dependencias en pruebas unitarias
+    public EmpleadoDAO(Connection conexion) {
+        this.conexion = conexion;
+    }
+    
     public void mostrarEmpleados(JTable tabla){
 
-    Connection con = ConexionBD.getConexionBD();
+    Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
     DefaultTableModel modelo = new DefaultTableModel();
 
@@ -81,7 +89,7 @@ public class EmpleadoDAO {
     public boolean guardarEmpleado(Empleado emp){
         try{
 
-            Connection con = ConexionBD.getConexionBD();
+            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
             String sql = "INSERT INTO empleado(nombre, apellidoP, apellidoM, telefono, idDepartamento, salarioHora) VALUES(?,?,?,?,?,?)";
 
@@ -116,7 +124,7 @@ public class EmpleadoDAO {
 
         try{
 
-            Connection con = ConexionBD.getConexionBD();
+            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
             String sql = "UPDATE empleado SET nombre=?, apellidoP=?, apellidoM=?, telefono=?, idDepartamento=?, salarioHora=? WHERE idEmpleado=?";
 
@@ -153,7 +161,7 @@ public class EmpleadoDAO {
     public boolean eliminarEmpleado(int idEmpleado){
         try{
 
-        Connection con = ConexionBD.getConexionBD();
+        Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();
 
         String sql = "DELETE FROM empleado WHERE idEmpleado=?";
 

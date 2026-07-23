@@ -5,10 +5,11 @@
         <group>
             <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/src/Modelo/DAO/CategoriaProductoDAO.java</file>
             <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/test/Modelo/DAO/CategoriaProductoDAOTest.java</file>
-            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/project.properties</file>
-            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/private/private.properties</file>
-            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/genfiles.properties</file>
-            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/nbproject/project.xml</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/src/Modelo/DAO/UsuarioDAO.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/src/Modelo/DAO/DepartamentoDAO.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/src/Modelo/DAO/EmpleadoDAO.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/test/Modelo/DAO/DepartamentoDAOTest.java</file>
+            <file>file:/C:/Users/Jangrynds/Documents/Sistemas%20Computacionales/Ingeniería%20de%20Software/Isoft%20Papeleria/ProyectoPasteleria/src/Modelo/ConexionBD.java</file>
         </group>
     </open-files>
 </project-private>
