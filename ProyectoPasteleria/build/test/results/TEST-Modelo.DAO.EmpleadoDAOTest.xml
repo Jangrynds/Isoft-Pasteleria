@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="DESKTOP-1N4RHO0" name="Modelo.DAO.EmpleadoDAOTest" skipped="0" tests="2" time="0.144" timestamp="2026-07-23T22:54:59">
+<testsuite errors="0" failures="0" hostname="DESKTOP-1N4RHO0" name="Modelo.DAO.EmpleadoDAOTest" skipped="0" tests="8" time="0.286" timestamp="2026-07-24T00:23:03">
   <properties>
     <property name="javac.test.classpath" value="C:\Users\Jangrynds\Downloads\mysql-connector-j-9.5.0\mysql-connector-j-9.5.0.jar:build/classes:..\..\..\..\..\Downloads\hamcrest-core-1.3.jar:..\..\..\..\..\Downloads\junit-4.13.2.jar:C:\Users\Jangrynds\Downloads\byte-buddy-1.14.12.jar:C:\Users\Jangrynds\Downloads\byte-buddy-agent-1.14.12.jar:C:\Users\Jangrynds\Downloads\mockito-core-5.11.0.jar:C:\Users\Jangrynds\Downloads\objenesis-3.3.jar" />
     <property name="java.specification.version" value="24" />
@@ -15,7 +15,7 @@
     <property name="libs.eclipselink.javadoc" value="C:\Program Files\Apache NetBeans\java\modules\ext\docs\jakarta.persistence-2.2.3-doc.zip" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="sun.boot.library.path" value="C:\Program Files\Apache NetBeans\jdk\bin" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Modelo.DAO.EmpleadoDAOTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\results\TEST-Modelo.DAO.EmpleadoDAOTest.xml crashfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junitvmwatcher6942959386856179610.properties propsfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junit4090312272220412117.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Modelo.DAO.EmpleadoDAOTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\test\results\TEST-Modelo.DAO.EmpleadoDAOTest.xml crashfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junitvmwatcher15844296444892000260.properties propsfile=C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\build\junit16147823456839349861.properties" />
     <property name="jdk.debug" value="release" />
     <property name="javadoc.use" value="true" />
     <property name="javadoc.notree" value="false" />
@@ -34,6 +34,7 @@
     <property name="libs.eclipselink.maven-pom" value="" />
     <property name="libs.metro.maven-pom" value="" />
     <property name="libs.JAXB-ENDORSED.javadoc" value="" />
+    <property name="org.openide.awt.SwingBrowserImpl.do-not-block-awt" value="false" />
     <property name="sun.java2d.noddraw" value="true" />
     <property name="guice.disable.misplaced.annotation.check" value="true" />
     <property name="libs.primefaces.javadoc" value="" />
@@ -209,7 +210,7 @@
     <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Jdk14Logger" />
     <property name="file.reference.byte-buddy-1.14.12.jar" value="C:\Users\Jangrynds\Downloads\byte-buddy-1.14.12.jar" />
     <property name="libs.javaee-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee-api-6.0.jar" />
-    <property name="javac.includesfile.binary" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\null791193086" />
+    <property name="javac.includesfile.binary" value="C:\Users\Jangrynds\Documents\Sistemas Computacionales\Ingeniería de Software\Isoft Papeleria\ProyectoPasteleria\null1733018629" />
     <property name="libs.javaee-api-7.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee-api-7.0.jar" />
     <property name="sun.cpu.isalist" value="amd64" />
     <property name="libs.restapi.maven-pom" value="" />
@@ -436,9 +437,17 @@
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\Apache NetBeans\enterprise\ant\extra\jspcompile.jar" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\Apache NetBeans\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
   </properties>
-  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testGuardarEmpleado_CaminoExcepcion_EmpleadoNulo" time="0.021" />
-  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testGuardarEmpleado_CaminoFeliz" time="0.021" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testEditarEmpleado_CaminoExcepcion_ObjetoNulo" time="0.041" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testEditarEmpleado_CaminoFeliz" time="0.0" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testMostrarEmpleados_CaminoExcepcion_TablaNula" time="0.004" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testMostrarEmpleados_CaminoFeliz" time="0.135" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testEliminarEmpleado_CaminoFeliz" time="0.001" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testGuardarEmpleado_CaminoExcepcion_ObjetoNulo" time="0.001" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testGuardarEmpleado_CaminoFeliz" time="0.001" />
+  <testcase classname="Modelo.DAO.EmpleadoDAOTest" name="testEliminarEmpleado_CaminoExcepcion_FalloBD" time="0.002" />
   <system-out><![CDATA[Error: java.lang.NullPointerException: Cannot invoke "Modelo.Clases.Empleado.getNombre()" because "emp" is null
+Error: java.lang.NullPointerException: Cannot invoke "Modelo.Clases.Empleado.getNombre()" because "emp" is null
+Error: java.sql.SQLException: Simulación de error en la BD
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
