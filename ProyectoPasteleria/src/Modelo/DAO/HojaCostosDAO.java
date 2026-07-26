@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.DAO;
 
 import Modelo.Clases.Pedido;
@@ -15,55 +11,73 @@ import java.sql.PreparedStatement;
 import javax.swing.JComboBox;
 
 /**
- *
  * @author ingri
  */
 public class HojaCostosDAO {
     
+    private Connection conexionPrueba;
+
+    // Constructor por defecto (para producción)
+    public HojaCostosDAO() {
+    }
+
+    // Constructor sobrecargado para Inyección de Dependencias (para Pruebas Unitarias)
+    public HojaCostosDAO(Connection con) {
+        this.conexionPrueba = con;
+    }
+
+    // Método auxiliar interno para obtener la conexión adecuada
+    private Connection getConexion() throws Exception {
+        if (this.conexionPrueba != null) {
+            return this.conexionPrueba;
+        }
+        return ConexionBD.getConexionBD();
+    }
+    
     public Pedido obtenerPedido(int idPedido){
 
-    Pedido pedido = new Pedido();
+        Pedido pedido = new Pedido();
 
-    try{
+        try{
 
-        Connection con = ConexionBD.getConexionBD();
+            Connection con = getConexion();
 
-        String sql =
-            "SELECT * "
-          + "FROM pedido "
-          + "WHERE idPedido = ?";
+            String sql =
+                "SELECT * "
+              + "FROM pedido "
+              + "WHERE idPedido = ?";
 
-        PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
-        ps.setInt(1,idPedido);
+            ps.setInt(1,idPedido);
 
-        ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-            if(rs.next()){
+                if(rs.next()){
 
-                pedido.setIdPedido( rs.getInt("idPedido"));
+                    pedido.setIdPedido( rs.getInt("idPedido"));
 
-                pedido.setCliente( rs.getString("cliente"));
+                    pedido.setCliente( rs.getString("cliente"));
 
-                pedido.setFechaInicio( 
-                        rs.getDate("fechaInicio"));
+                    pedido.setFechaInicio( 
+                            rs.getDate("fechaInicio"));
 
-                pedido.setFechaEntrega( rs.getDate("fechaEntrega"));
+                    pedido.setFechaEntrega( rs.getDate("fechaEntrega"));
 
-                pedido.setObservaciones( rs.getString("observaciones"));
-                
-                pedido.setCantidad(rs.getInt("cantidad"));
+                    pedido.setObservaciones( rs.getString("observaciones"));
+                    
+                    pedido.setCantidad(rs.getInt("cantidad"));
+
+                }
+
+            }catch(Exception e){
+
+                System.out.println(
+                        "Error: " + e);
 
             }
 
-        }catch(Exception e){
-
-            System.out.println(
-                    "Error: " + e);
-
-        }
-
-        return pedido;
+            return pedido;
 
     }
     
@@ -71,7 +85,7 @@ public class HojaCostosDAO {
 
         try{
 
-            Connection con = ConexionBD.getConexionBD();
+            Connection con = getConexion();
 
             String sql =
                     "SELECT idPedido, cliente "
@@ -105,8 +119,7 @@ public class HojaCostosDAO {
 
         try{
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+            Connection con = getConexion();
 
             String sql =
                 "SELECT idRequisicion, "
@@ -115,13 +128,11 @@ public class HojaCostosDAO {
               + "FROM requisicion "
               + "WHERE idPedido = ?";
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setInt(1,idPedido);
 
-            ResultSet rs =
-                    ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             DefaultTableModel modelo =
                     (DefaultTableModel)
@@ -164,7 +175,7 @@ public class HojaCostosDAO {
 
         try{
 
-            Connection con = ConexionBD.getConexionBD();
+            Connection con = getConexion();
 
             String sql =
                 "SELECT t.idTarjeta, "
