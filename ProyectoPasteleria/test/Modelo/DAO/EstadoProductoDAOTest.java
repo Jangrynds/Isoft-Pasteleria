@@ -24,7 +24,7 @@ public class EstadoProductoDAOTest {
 
     private EstadoProductoDAO estadoProductoDAO;
 
-    // --- MÉTODOS AUXILIARES PARA CREAR STUBS NATIVOS SIN MOCKITO ---
+
 
     @SuppressWarnings("unchecked")
     private <T> T crearStub(Class<T> interfaz, InvocationHandler handler) {
