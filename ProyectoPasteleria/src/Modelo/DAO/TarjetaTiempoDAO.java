@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.function.Supplier;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.time.LocalTime;
@@ -22,26 +23,37 @@ import javax.swing.table.DefaultTableModel;
  * @author ingri
  */
 public class TarjetaTiempoDAO {
-    
-    public void llenarEmpleados(JComboBox combo){
 
-        try{
+    private final Supplier<Connection> connectionSupplier;
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+    public TarjetaTiempoDAO() {
+        this(ConexionBD::getConexionBD);
+    }
+
+    public TarjetaTiempoDAO(Supplier<Connection> connectionSupplier) {
+        this.connectionSupplier = connectionSupplier;
+    }
+
+    private Connection getConnection() {
+        return connectionSupplier.get();
+    }
+
+    public void llenarEmpleados(JComboBox combo) {
+
+        try {
+
+            Connection con = getConnection();
 
             String sql = "SELECT idEmpleado, nombre, apellidoP "
-              + "FROM empleado";
+                    + "FROM empleado";
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
-            ResultSet rs =
-                    ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             combo.removeAllItems();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 combo.addItem(
                         rs.getInt("idEmpleado")
@@ -52,35 +64,31 @@ public class TarjetaTiempoDAO {
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println("Error: " + e);
 
         }
 
     }
-    
-    public void obtenerDatosEmpleado(int idEmpleado,JTextField txtIdEmpleado,JTextField txtTasaHora){
 
-        try{
+    public void obtenerDatosEmpleado(int idEmpleado, JTextField txtIdEmpleado, JTextField txtTasaHora) {
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+        try {
 
-            String sql =
-                "SELECT idEmpleado, salarioHora "
-              + "FROM empleado "
-              + "WHERE idEmpleado = ?";
+            Connection con = getConnection();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            String sql = "SELECT idEmpleado, salarioHora "
+                    + "FROM empleado "
+                    + "WHERE idEmpleado = ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setInt(1, idEmpleado);
 
-            ResultSet rs =
-                    ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-            if(rs.next()){
+            if (rs.next()) {
 
                 txtIdEmpleado.setText(
                         rs.getString("idEmpleado"));
@@ -90,32 +98,29 @@ public class TarjetaTiempoDAO {
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println("Error: " + e);
 
         }
 
     }
-    
-    public void llenarNoPedido(JComboBox combo){
-        try{
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+    public void llenarNoPedido(JComboBox combo) {
+        try {
+
+            Connection con = getConnection();
 
             String sql = "SELECT idPedido, cliente "
-              + "FROM pedido";
+                    + "FROM pedido";
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
-            ResultSet rs =
-                    ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             combo.removeAllItems();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 combo.addItem(
                         rs.getInt("idPedido")
@@ -124,34 +129,30 @@ public class TarjetaTiempoDAO {
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println("Error: " + e);
 
         }
     }
-    
-    
-    public int guardarTarjetaTiempo(TarjetaTiempo tarjeta){
+
+    public int guardarTarjetaTiempo(TarjetaTiempo tarjeta) {
 
         int idTarjeta = 0;
 
-        try{
+        try {
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+            Connection con = getConnection();
 
-            String sql =
-                "INSERT INTO tarjetaTiempo "
-              + "(idEmpleado,idPedido,"
-              + "fecha,observaciones,"
-              + "totalHoras,totalCosto) "
-              + "VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO tarjetaTiempo "
+                    + "(idEmpleado,idPedido,"
+                    + "fecha,observaciones,"
+                    + "totalHoras,totalCosto) "
+                    + "VALUES(?,?,?,?,?,?)";
 
-            PreparedStatement ps =
-                    con.prepareStatement(
-                            sql,
-                            PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(
+                    sql,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
 
             ps.setInt(
                     1,
@@ -180,17 +181,15 @@ public class TarjetaTiempoDAO {
 
             ps.executeUpdate();
 
-            ResultSet rs =
-                    ps.getGeneratedKeys();
+            ResultSet rs = ps.getGeneratedKeys();
 
-            if(rs.next()){
+            if (rs.next()) {
 
-                idTarjeta =
-                        rs.getInt(1);
+                idTarjeta = rs.getInt(1);
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println(
                     "Error: " + e);
@@ -200,100 +199,91 @@ public class TarjetaTiempoDAO {
         return idTarjeta;
 
     }
-    
-    public boolean guardarDetalleTiempo(int idTarjeta, String dia, String horaInicio, String horaFin, double tiempoTotal, double tasaHora, double costoTotal){
 
-        try{
+    public boolean guardarDetalleTiempo(int idTarjeta, String dia, String horaInicio, String horaFin, double tiempoTotal, double tasaHora, double costoTotal) {
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+        try {
 
-            String sql =
-                "INSERT INTO detalleTarjetaTiempo "
-              + "(idTarjeta,dia,"
-              + "horaInicio,horaFin,"
-              + "tiempoTotal,tasaHora,"
-              + "costoTotal) "
-              + "VALUES(?,?,?,?,?,?,?)";
+            Connection con = getConnection();
+
+            String sql = "INSERT INTO detalleTarjetaTiempo "
+                    + "(idTarjeta,dia,"
+                    + "horaInicio,horaFin,"
+                    + "tiempoTotal,tasaHora,"
+                    + "costoTotal) "
+                    + "VALUES(?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setInt(1,idTarjeta);
+            ps.setInt(1, idTarjeta);
 
-            ps.setString(2,dia);
+            ps.setString(2, dia);
 
-            ps.setString(3,horaInicio);
+            ps.setString(3, horaInicio);
 
-            ps.setString(4,horaFin);
+            ps.setString(4, horaFin);
 
-            ps.setDouble(5,tiempoTotal);
+            ps.setDouble(5, tiempoTotal);
 
-            ps.setDouble(6,tasaHora);
+            ps.setDouble(6, tasaHora);
 
-            ps.setDouble(7,costoTotal);
+            ps.setDouble(7, costoTotal);
 
             return ps.executeUpdate() > 0;
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
-            System.out.println( "Error: " + e);
+            System.out.println("Error: " + e);
 
         }
 
         return false;
 
     }
-    
-    public void mostrarTarjetas(JTable tabla){
 
-        try{
+    public void mostrarTarjetas(JTable tabla) {
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+        try {
 
-            String sql =
-                "SELECT t.idTarjeta, "
-              + "t.idEmpleado, "
-              + "CONCAT(e.nombre,' ',e.apellidoP) empleado, "
-              + "t.idPedido, "
-              + "t.fecha, "
-              + "t.totalHoras, "
-              + "t.totalCosto, "
-              + "t.observaciones "
-              + "FROM tarjetaTiempo t "
-              + "INNER JOIN empleado e "
-              + "ON t.idEmpleado = e.idEmpleado";
+            Connection con = getConnection();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            String sql = "SELECT t.idTarjeta, "
+                    + "t.idEmpleado, "
+                    + "CONCAT(e.nombre,' ',e.apellidoP) empleado, "
+                    + "t.idPedido, "
+                    + "t.fecha, "
+                    + "t.totalHoras, "
+                    + "t.totalCosto, "
+                    + "t.observaciones "
+                    + "FROM tarjetaTiempo t "
+                    + "INNER JOIN empleado e "
+                    + "ON t.idEmpleado = e.idEmpleado";
 
-            ResultSet rs =
-                    ps.executeQuery();
+            PreparedStatement ps = con.prepareStatement(sql);
 
-            DefaultTableModel modelo =
-                    (DefaultTableModel)
-                    tabla.getModel();
+            ResultSet rs = ps.executeQuery();
+
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 
             modelo.setRowCount(0);
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 modelo.addRow(new Object[]{
+                    rs.getInt("idTarjeta"),
+                    rs.getString("empleado"),
+                    rs.getInt("idEmpleado"),
+                    rs.getInt("idPedido"),
+                    rs.getDate("fecha"),
+                    rs.getDouble("totalHoras"),
+                    rs.getDouble("totalCosto"),
+                    rs.getString("observaciones")
 
-                rs.getInt("idTarjeta"),
-                rs.getString("empleado"),
-                rs.getInt("idEmpleado"),
-                rs.getInt("idPedido"),
-                rs.getDate("fecha"),
-                rs.getDouble("totalHoras"),
-                rs.getDouble("totalCosto"),
-                rs.getString("observaciones")
-
-            });
+                });
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println(
                     "Error: " + e);
@@ -301,44 +291,37 @@ public class TarjetaTiempoDAO {
         }
 
     }
-    
-    public void mostrarDetalleTarjeta(JTable tabla,int idTarjeta){
 
-        try{
+    public void mostrarDetalleTarjeta(JTable tabla, int idTarjeta) {
 
-            Connection con =
-                    ConexionBD.getConexionBD();
+        try {
 
-            String sql =
-                "SELECT dia, "
-              + "horaInicio, "
-              + "horaFin, "
-              + "tiempoTotal, "
-              + "tasaHora, "
-              + "costoTotal "
-              + "FROM detalleTarjetaTiempo "
-              + "WHERE idTarjeta = ?";
+            Connection con = getConnection();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            String sql = "SELECT dia, "
+                    + "horaInicio, "
+                    + "horaFin, "
+                    + "tiempoTotal, "
+                    + "tasaHora, "
+                    + "costoTotal "
+                    + "FROM detalleTarjetaTiempo "
+                    + "WHERE idTarjeta = ?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setInt(1, idTarjeta);
 
-            ResultSet rs =
-                    ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-            DefaultTableModel modelo =
-                    (DefaultTableModel)
-                    tabla.getModel();
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 
             modelo.setRowCount(0);
 
             int contador = 1;
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 modelo.addRow(new Object[]{
-
                     contador++,
                     rs.getString("dia"),
                     rs.getString("horaInicio"),
@@ -351,7 +334,7 @@ public class TarjetaTiempoDAO {
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println(
                     "Error: " + e);
@@ -359,27 +342,26 @@ public class TarjetaTiempoDAO {
         }
 
     }
-    
-    public TarjetaTiempo obtenerTarjetaTiempo(int idTarjeta){
+
+    public TarjetaTiempo obtenerTarjetaTiempo(int idTarjeta) {
 
         TarjetaTiempo tarjeta = new TarjetaTiempo();
 
-        try{
+        try {
 
-            Connection con = ConexionBD.getConexionBD();
+            Connection con = getConnection();
 
-            String sql =
-                "SELECT * "
-              + "FROM tarjetaTiempo "
-              + "WHERE idTarjeta = ?";
+            String sql = "SELECT * "
+                    + "FROM tarjetaTiempo "
+                    + "WHERE idTarjeta = ?";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setInt(1,idTarjeta);
+            ps.setInt(1, idTarjeta);
 
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()){
+            if (rs.next()) {
 
                 tarjeta.setIdTarjeta(rs.getInt("idTarjeta"));
 
@@ -397,7 +379,7 @@ public class TarjetaTiempoDAO {
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println("Error: " + e);
 
@@ -406,60 +388,57 @@ public class TarjetaTiempoDAO {
         return tarjeta;
 
     }
-    
+
     public boolean actualizarTarjeta(
-        TarjetaTiempo tarjeta){
+            TarjetaTiempo tarjeta) {
 
-            try{
+        try {
 
-                Connection con =
-                        ConexionBD.getConexionBD();
+            Connection con = getConnection();
 
-                String sql =
-                    "UPDATE tarjetaTiempo "
-                  + "SET idEmpleado=?, "
-                  + "idPedido=?, "
-                  + "fecha=?, "
-                  + "observaciones=?, "
-                  + "totalHoras=?, "
-                  + "totalCosto=? "
-                  + "WHERE idTarjeta=?";
+            String sql = "UPDATE tarjetaTiempo "
+                    + "SET idEmpleado=?, "
+                    + "idPedido=?, "
+                    + "fecha=?, "
+                    + "observaciones=?, "
+                    + "totalHoras=?, "
+                    + "totalCosto=? "
+                    + "WHERE idTarjeta=?";
 
-                PreparedStatement ps =
-                        con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
-                ps.setInt(1,
-                        tarjeta.getIdEmpleado());
+            ps.setInt(1,
+                    tarjeta.getIdEmpleado());
 
-                ps.setInt(2,
-                        tarjeta.getIdPedido());
+            ps.setInt(2,
+                    tarjeta.getIdPedido());
 
-                ps.setDate(3,
-                        new java.sql.Date(
-                                tarjeta.getFecha().getTime()));
+            ps.setDate(3,
+                    new java.sql.Date(
+                            tarjeta.getFecha().getTime()));
 
-                ps.setString(4,
-                        tarjeta.getObservaciones());
+            ps.setString(4,
+                    tarjeta.getObservaciones());
 
-                ps.setDouble(5,
-                        tarjeta.getTotalHoras());
+            ps.setDouble(5,
+                    tarjeta.getTotalHoras());
 
-                ps.setDouble(6,
-                        tarjeta.getTotalCosto());
+            ps.setDouble(6,
+                    tarjeta.getTotalCosto());
 
-                ps.setInt(7,
-                        tarjeta.getIdTarjeta());
+            ps.setInt(7,
+                    tarjeta.getIdTarjeta());
 
-                return ps.executeUpdate() > 0;
+            return ps.executeUpdate() > 0;
 
-            }catch(Exception e){
+        } catch (Exception e) {
 
-                System.out.println(
-                        "Error: " + e);
+            System.out.println(
+                    "Error: " + e);
 
-                return false;
-
-            }
+            return false;
 
         }
+
+    }
 }
