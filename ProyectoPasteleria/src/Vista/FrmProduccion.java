@@ -816,39 +816,55 @@ public class FrmProduccion extends javax.swing.JFrame {
     }//GEN-LAST:event_tblPedidosMouseClicked
 
     private void BtnAgregarProductoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarProductoPedidoActionPerformed
-        // TODO add your handling code here:
-        String producto =
-            cmbNombreProductos.getSelectedItem().toString();
+         // 1. Obtenemos el texto y quitamos espacios en blanco extra con trim()
+    String textoCantidad = txtCantidad.getText().trim();
+    
+    // 2. Validamos que no esté vacío
+    if (textoCantidad.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad.", "Campo vacío", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return; // Detiene la ejecución para que no avance al error
+    }
 
-        int cantidad =
-                Integer.parseInt(txtCantidad.getText());
-
-        ProductoDAO dao = new ProductoDAO();
+    int cantidad = 0;
+    
+    // 3. Validamos que realmente sea un número entero
+    try {
+        cantidad = Integer.parseInt(textoCantidad);
         
-        int idProducto =
-        dao.obtenerIdProducto(producto);
+        // Validamos que no ingresen números negativos o cero si tu lógica lo requiere
+        if (cantidad <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "La cantidad debe ser mayor a cero.", "Valor inválido", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "La cantidad debe ser un número entero válido (Ej: 1, 2, 5).", "Error de formato", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return; // Detiene la ejecución
+    }
 
-        double precio =
-                dao.obtenerPrecioProducto(producto);
+    // 4. Si todo salió bien arriba, continuamos con tu lógica original
+    String producto = cmbNombreProductos.getSelectedItem().toString();
+    ProductoDAO dao = new ProductoDAO();
+    
+    int idProducto = dao.obtenerIdProducto(producto);
+    double precio = dao.obtenerPrecioProducto(producto);
+    double subtotal = cantidad * precio;
 
-        double subtotal =
-                cantidad * precio;
-
-        DefaultTableModel modelo =
-                (DefaultTableModel) tblProductosPedido.getModel();
-
-        modelo.addRow(new Object[]{
-            idProducto,
-            producto,
-            cantidad,
-            precio,
-            subtotal
-        });
-        //Suma los subtotales de los productos seleccionados
-        calcularTotalPedido();
-        //Limpiar campos
-        txtCantidad.setText("");
-        cmbNombreProductos.setSelectedIndex(0);
+    DefaultTableModel modelo = (DefaultTableModel) tblProductosPedido.getModel();
+    modelo.addRow(new Object[]{
+        idProducto,
+        producto,
+        cantidad,
+        precio,
+        subtotal
+    });
+    
+    // Suma los subtotales de los productos seleccionados
+    calcularTotalPedido();
+    
+    // Limpiar campos
+    txtCantidad.setText("");
+    cmbNombreProductos.setSelectedIndex(0);
     }//GEN-LAST:event_BtnAgregarProductoPedidoActionPerformed
 
     private void BtnQuitarProductoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnQuitarProductoPedidoActionPerformed
