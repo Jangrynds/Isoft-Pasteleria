@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.DAO;
 
 import Modelo.ConexionBD;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.function.Supplier;
 import javax.swing.JComboBox;
 
 /**
@@ -15,12 +12,26 @@ import javax.swing.JComboBox;
  * @author ingri
  */
 public class TamanoProductoDAO {
-    
-    public void mostrarTamanoProducto(JComboBox JcomboTamanoProductos){
 
-        try{
+    private final Supplier<Connection> connectionSupplier;
 
-            Connection con = ConexionBD.getConexionBD();
+    public TamanoProductoDAO() {
+        this(ConexionBD::getConexionBD);
+    }
+
+    public TamanoProductoDAO(Supplier<Connection> connectionSupplier) {
+        this.connectionSupplier = connectionSupplier;
+    }
+
+    private Connection getConnection() {
+        return connectionSupplier.get();
+    }
+
+    public void mostrarTamanoProducto(JComboBox JcomboTamanoProductos) {
+
+        try {
+
+            Connection con = getConnection();
 
             String sql = "SELECT * FROM tamanoProducto ORDER BY idtamanoProducto";
 
@@ -28,13 +39,13 @@ public class TamanoProductoDAO {
 
             ResultSet rs = st.executeQuery(sql);
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 JcomboTamanoProductos.addItem(rs.getString("nombretamanoP"));
 
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println("Error: " + e);
 
