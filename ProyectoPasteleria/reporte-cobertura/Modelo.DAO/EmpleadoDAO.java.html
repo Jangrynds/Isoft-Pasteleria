@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmpleadoDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">EmpleadoDAO.java</span></div><h1>EmpleadoDAO.java</h1><pre class="source lang-java linenums">package Modelo.DAO;
+
+import Modelo.Clases.Empleado;
+import Modelo.ConexionBD;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class EmpleadoDAO {
+    
+    // Variable para almacenar la conexión (real o simulada)
+    private Connection conexion;
+
+    // Constructor por defecto para producción
+<span class="nc" id="L18">    public EmpleadoDAO() {</span>
+<span class="nc" id="L19">        this.conexion = ConexionBD.getConexionBD();</span>
+<span class="nc" id="L20">    }</span>
+
+    // Constructor para inyección de dependencias en pruebas unitarias
+<span class="fc" id="L23">    public EmpleadoDAO(Connection conexion) {</span>
+<span class="fc" id="L24">        this.conexion = conexion;</span>
+<span class="fc" id="L25">    }</span>
+    
+    public void mostrarEmpleados(JTable tabla){
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L29">        DefaultTableModel modelo = new DefaultTableModel();</span>
+<span class="fc" id="L30">        modelo.addColumn(&quot;ID&quot;);</span>
+<span class="fc" id="L31">        modelo.addColumn(&quot;Nombre&quot;);</span>
+<span class="fc" id="L32">        modelo.addColumn(&quot;Apellido Paterno&quot;);</span>
+<span class="fc" id="L33">        modelo.addColumn(&quot;Apellido Materno&quot;);</span>
+<span class="fc" id="L34">        modelo.addColumn(&quot;Teléfono&quot;);</span>
+<span class="fc" id="L35">        modelo.addColumn(&quot;Departamento&quot;);</span>
+<span class="fc" id="L36">        modelo.addColumn(&quot;Salario por Hora&quot;);</span>
+<span class="fc" id="L37">        tabla.setModel(modelo);</span>
+
+<span class="fc" id="L39">        String sql = &quot;SELECT e.idEmpleado, e.nombre, e.apellidoP, e.apellidoM, e.telefono, d.nombreDepartamento, e.salarioHora &quot;</span>
+            + &quot;FROM empleado e INNER JOIN departamento d ON e.idDepartamento = d.idDepartamento&quot;;
+<span class="fc" id="L41">        String datos[] = new String[7];</span>
+
+        try{
+<span class="fc" id="L44">            Statement st = con.createStatement();</span>
+<span class="fc" id="L45">            ResultSet rs = st.executeQuery(sql);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L47">                datos[0] = rs.getString(&quot;idEmpleado&quot;);</span>
+<span class="fc" id="L48">                datos[1] = rs.getString(&quot;nombre&quot;);</span>
+<span class="fc" id="L49">                datos[2] = rs.getString(&quot;apellidoP&quot;);</span>
+<span class="fc" id="L50">                datos[3] = rs.getString(&quot;apellidoM&quot;);</span>
+<span class="fc" id="L51">                datos[4] = rs.getString(&quot;telefono&quot;);</span>
+<span class="fc" id="L52">                datos[5] = rs.getString(&quot;nombreDepartamento&quot;);</span>
+<span class="fc" id="L53">                datos[6] = rs.getString(&quot;salarioHora&quot;);</span>
+<span class="fc" id="L54">                modelo.addRow(datos);</span>
+            }
+<span class="fc" id="L56">            tabla.setModel(modelo);</span>
+<span class="nc" id="L57">        }catch(Exception e){</span>
+<span class="nc" id="L58">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">    }</span>
+    
+    public boolean guardarEmpleado(Empleado emp){
+        try{
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L65">            String sql = &quot;INSERT INTO empleado(nombre, apellidoP, apellidoM, telefono, idDepartamento, salarioHora) VALUES(?,?,?,?,?,?)&quot;;</span>
+<span class="fc" id="L66">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L67">            ps.setString(1, emp.getNombre());</span>
+<span class="fc" id="L68">            ps.setString(2, emp.getApellidoPaterno());</span>
+<span class="fc" id="L69">            ps.setString(3, emp.getApellidoMaterno());</span>
+<span class="fc" id="L70">            ps.setString(4, emp.getTelefono());</span>
+<span class="fc" id="L71">            ps.setInt(5, emp.getIdDepartamento());</span>
+<span class="fc" id="L72">            ps.setDouble(6, emp.getSalarioHora());</span>
+<span class="fc" id="L73">            ps.execute();</span>
+<span class="fc" id="L74">            return true;</span>
+<span class="fc" id="L75">        }catch(Exception e){</span>
+<span class="fc" id="L76">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L77">            return false;</span>
+        }
+    }
+    
+    public boolean editarEmpleado(Empleado emp){
+        try{
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L84">            String sql = &quot;UPDATE empleado SET nombre=?, apellidoP=?, apellidoM=?, telefono=?, idDepartamento=?, salarioHora=? WHERE idEmpleado=?&quot;;</span>
+<span class="fc" id="L85">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L86">            ps.setString(1, emp.getNombre());</span>
+<span class="fc" id="L87">            ps.setString(2, emp.getApellidoPaterno());</span>
+<span class="fc" id="L88">            ps.setString(3, emp.getApellidoMaterno());</span>
+<span class="fc" id="L89">            ps.setString(4, emp.getTelefono());</span>
+<span class="fc" id="L90">            ps.setInt(5, emp.getIdDepartamento());</span>
+<span class="fc" id="L91">            ps.setDouble(6, emp.getSalarioHora());</span>
+<span class="fc" id="L92">            ps.setInt(7, emp.getIdEmpleado());</span>
+<span class="fc" id="L93">            ps.executeUpdate();</span>
+<span class="fc" id="L94">            return true;</span>
+<span class="fc" id="L95">        }catch(Exception e){</span>
+<span class="fc" id="L96">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L97">            return false;</span>
+        }
+    }
+    
+    public boolean eliminarEmpleado(int idEmpleado){
+        try{
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L104">            String sql = &quot;DELETE FROM empleado WHERE idEmpleado=?&quot;;</span>
+<span class="fc" id="L105">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L106">            ps.setInt(1, idEmpleado);</span>
+<span class="fc" id="L107">            ps.executeUpdate();</span>
+<span class="fc" id="L108">            return true;</span>
+<span class="fc" id="L109">        }catch(Exception e){</span>
+<span class="fc" id="L110">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L111">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

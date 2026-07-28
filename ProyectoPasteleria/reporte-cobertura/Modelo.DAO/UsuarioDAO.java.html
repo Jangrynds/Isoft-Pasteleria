@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">UsuarioDAO.java</span></div><h1>UsuarioDAO.java</h1><pre class="source lang-java linenums">package Modelo.DAO;
+
+import Modelo.Clases.Sesion;
+import Modelo.ConexionBD;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ *
+ * @author ingri
+ */
+public class UsuarioDAO {
+
+    private final Connection conexionInyectada;
+
+    /**
+     * Constructor por defecto utilizado en producción.
+     * Mantiene la compatibilidad con la arquitectura original.
+     */
+<span class="nc" id="L21">    public UsuarioDAO() {</span>
+<span class="nc" id="L22">        this.conexionInyectada = null;</span>
+<span class="nc" id="L23">    }</span>
+
+    /**
+     * Constructor para Inyección de Dependencias (uso en Pruebas Unitarias/Mocks/Stubs).
+     * @param conexion Conexión simulada a la base de datos.
+     */
+<span class="fc" id="L29">    public UsuarioDAO(Connection conexion) {</span>
+<span class="fc" id="L30">        this.conexionInyectada = conexion;</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Obtiene la conexión a la base de datos (inyectada o por defecto).
+     */
+    private Connection getConexion() throws Exception {
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (this.conexionInyectada != null) {</span>
+<span class="fc" id="L38">            return this.conexionInyectada;</span>
+        }
+<span class="nc" id="L40">        return ConexionBD.getConexionBD();</span>
+    }
+
+    public boolean validarUsuario(String nombre, String contrasena) {
+        try {
+<span class="fc" id="L45">            Connection con = getConexion();</span>
+<span class="fc" id="L46">            String sql = &quot;SELECT * FROM empleado WHERE nombre=? AND contrasena=?&quot;;</span>
+
+<span class="fc" id="L48">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L49">            ps.setString(1, nombre);</span>
+<span class="fc" id="L50">            ps.setString(2, contrasena);</span>
+
+<span class="fc" id="L52">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L55">                Sesion.idEmpleado = rs.getInt(&quot;idEmpleado&quot;);</span>
+<span class="fc" id="L56">                Sesion.idDepartamento = rs.getInt(&quot;idDepartamento&quot;);</span>
+<span class="fc" id="L57">                return true;</span>
+            }
+
+<span class="fc" id="L60">            return false;</span>
+<span class="fc" id="L61">        } catch (Exception e) {</span>
+<span class="fc" id="L62">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L63">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

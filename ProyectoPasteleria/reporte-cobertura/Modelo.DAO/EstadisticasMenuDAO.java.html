@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EstadisticasMenuDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">EstadisticasMenuDAO.java</span></div><h1>EstadisticasMenuDAO.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo.DAO;
+
+import Modelo.ConexionBD;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ *
+ * @author ingri
+ */
+public class EstadisticasMenuDAO {
+    
+    // Variable para almacenar la conexión (real o simulada)
+    private Connection conexion;
+
+    // Constructor por defecto para producción
+<span class="nc" id="L22">    public EstadisticasMenuDAO() {</span>
+<span class="nc" id="L23">        this.conexion = ConexionBD.getConexionBD();</span>
+<span class="nc" id="L24">    }</span>
+
+    // Constructor para inyección de dependencias en pruebas unitarias
+<span class="fc" id="L27">    public EstadisticasMenuDAO(Connection conexion) {</span>
+<span class="fc" id="L28">        this.conexion = conexion;</span>
+<span class="fc" id="L29">    }</span>
+    
+    public int contarEmpleados(){
+<span class="fc" id="L32">        int total = 0;</span>
+        try{
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L35">            String sql = &quot;SELECT COUNT(*) total FROM empleado&quot;;</span>
+<span class="fc" id="L36">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L37">            ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L39">                total = rs.getInt(&quot;total&quot;);</span>
+            }
+<span class="fc" id="L41">        }catch(Exception e){</span>
+<span class="fc" id="L42">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L43">        }</span>
+<span class="fc" id="L44">        return total;</span>
+    }
+    
+    public int contarIngredientes(){
+<span class="fc" id="L48">        int total = 0;</span>
+        try{
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L51">            String sql = &quot;SELECT COUNT(*) total FROM ingredientes&quot;;</span>
+<span class="fc" id="L52">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L53">            ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L55">                total = rs.getInt(&quot;total&quot;);</span>
+            }
+<span class="fc" id="L57">        }catch(Exception e){</span>
+<span class="fc" id="L58">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">        return total;</span>
+    }
+    
+    public int contarPedidos(){
+<span class="fc" id="L64">        int total = 0;</span>
+        try{
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L67">            String sql = &quot;SELECT COUNT(*) total FROM pedido&quot;;</span>
+<span class="fc" id="L68">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L69">            ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L71">                total = rs.getInt(&quot;total&quot;);</span>
+            }
+<span class="fc" id="L73">        }catch(Exception e){</span>
+<span class="fc" id="L74">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L75">        }</span>
+<span class="fc" id="L76">        return total;</span>
+    }
+    
+    public int contarProductos(){
+<span class="fc" id="L80">        int total = 0;</span>
+        try{
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L83">            String sql = &quot;SELECT COUNT(*) total FROM producto&quot;;</span>
+<span class="fc" id="L84">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L85">            ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L87">                total = rs.getInt(&quot;total&quot;);</span>
+            }
+<span class="fc" id="L89">        }catch(Exception e){</span>
+<span class="fc" id="L90">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L91">        }</span>
+<span class="fc" id="L92">        return total;</span>
+    }
+    
+    public int contarTarjetas(){
+<span class="fc" id="L96">        int total = 0;</span>
+        try{
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            Connection con = (this.conexion != null) ? this.conexion : ConexionBD.getConexionBD();</span>
+<span class="fc" id="L99">            String sql = &quot;SELECT COUNT(*) total FROM tarjetaTiempo&quot;;</span>
+<span class="fc" id="L100">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L101">            ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L103">                total = rs.getInt(&quot;total&quot;);</span>
+            }
+<span class="fc" id="L105">        }catch(Exception e){</span>
+<span class="fc" id="L106">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">        return total;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

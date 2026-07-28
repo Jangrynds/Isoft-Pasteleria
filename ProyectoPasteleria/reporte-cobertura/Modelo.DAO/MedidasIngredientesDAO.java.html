@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedidasIngredientesDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">MedidasIngredientesDAO.java</span></div><h1>MedidasIngredientesDAO.java</h1><pre class="source lang-java linenums">package Modelo.DAO;
+
+import Modelo.ConexionBD;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JComboBox;
+
+/**
+ * @author ingri
+ */
+public class MedidasIngredientesDAO {
+
+    private Connection conexionInyectada;
+
+    // Constructor por defecto para producción
+<span class="nc" id="L17">    public MedidasIngredientesDAO() {</span>
+<span class="nc" id="L18">    }</span>
+
+    // Constructor para inyección de dependencias (Pruebas Unitarias)
+<span class="fc" id="L21">    public MedidasIngredientesDAO(Connection conexionInyectada) {</span>
+<span class="fc" id="L22">        this.conexionInyectada = conexionInyectada;</span>
+<span class="fc" id="L23">    }</span>
+
+    // Método auxiliar para obtener la conexión adecuada
+    private Connection getConexion() throws Exception {
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (this.conexionInyectada != null) {</span>
+<span class="fc" id="L28">            return this.conexionInyectada;</span>
+        }
+<span class="nc" id="L30">        return ConexionBD.getConexionBD();</span>
+    }
+
+    public void mostrarMedidasIngredientes(JComboBox JcomboMedidasIngredientes) {
+        try {
+<span class="fc" id="L35">            Connection con = getConexion();</span>
+<span class="fc" id="L36">            String sql = &quot;SELECT * FROM medidasIngredientes ORDER BY idMedida&quot;;</span>
+<span class="fc" id="L37">            Statement st = con.createStatement();</span>
+<span class="fc" id="L38">            ResultSet rs = st.executeQuery(sql);</span>
+
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L41">                JcomboMedidasIngredientes.addItem(rs.getString(&quot;nombreMedida&quot;));</span>
+            }
+<span class="fc" id="L43">        } catch (Exception e) {</span>
+<span class="fc" id="L44">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

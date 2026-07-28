@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConexionBD.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo</a> &gt; <span class="el_source">ConexionBD.java</span></div><h1>ConexionBD.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author ingri
+ */
+<span class="nc" id="L16">public class ConexionBD {</span>
+    private static final String URL = &quot;jdbc:mysql://localhost:3306/pasteleria&quot;;
+    private static final String USER = &quot;root&quot;;
+    private static final String PASSWORD = &quot;root&quot;;
+    
+    public static Connection getConexionBD(){
+<span class="fc" id="L22">        Connection con = null;</span>
+        
+        try{
+<span class="fc" id="L25">          con = DriverManager.getConnection(URL, USER, PASSWORD);</span>
+<span class="fc" id="L26">          System.out.println(&quot;Conexion exitosa&quot;);</span>
+<span class="nc" id="L27">        }catch(SQLException e){</span>
+<span class="nc" id="L28">            System.out.println(&quot;Error de conexión: &quot; + e.getMessage());</span>
+<span class="fc" id="L29">        }</span>
+        
+<span class="fc" id="L31">        return con; </span>
+    };
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

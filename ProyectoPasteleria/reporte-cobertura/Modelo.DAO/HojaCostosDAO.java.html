@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HojaCostosDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">HojaCostosDAO.java</span></div><h1>HojaCostosDAO.java</h1><pre class="source lang-java linenums">package Modelo.DAO;
+
+import Modelo.Clases.Pedido;
+import Modelo.ConexionBD;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.swing.JComboBox;
+
+/**
+ * @author ingri
+ */
+public class HojaCostosDAO {
+    
+    private Connection conexionPrueba;
+
+    // Constructor por defecto (para producción)
+<span class="nc" id="L21">    public HojaCostosDAO() {</span>
+<span class="nc" id="L22">    }</span>
+
+    // Constructor sobrecargado para Inyección de Dependencias (para Pruebas Unitarias)
+<span class="fc" id="L25">    public HojaCostosDAO(Connection con) {</span>
+<span class="fc" id="L26">        this.conexionPrueba = con;</span>
+<span class="fc" id="L27">    }</span>
+
+    // Método auxiliar interno para obtener la conexión adecuada
+    private Connection getConexion() throws Exception {
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (this.conexionPrueba != null) {</span>
+<span class="fc" id="L32">            return this.conexionPrueba;</span>
+        }
+<span class="nc" id="L34">        return ConexionBD.getConexionBD();</span>
+    }
+    
+    public Pedido obtenerPedido(int idPedido){
+
+<span class="fc" id="L39">        Pedido pedido = new Pedido();</span>
+
+        try{
+
+<span class="fc" id="L43">            Connection con = getConexion();</span>
+
+<span class="fc" id="L45">            String sql =</span>
+                &quot;SELECT * &quot;
+              + &quot;FROM pedido &quot;
+              + &quot;WHERE idPedido = ?&quot;;
+
+<span class="fc" id="L50">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L52">            ps.setInt(1,idPedido);</span>
+
+<span class="fc" id="L54">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">                if(rs.next()){</span>
+
+<span class="fc" id="L58">                    pedido.setIdPedido( rs.getInt(&quot;idPedido&quot;));</span>
+
+<span class="fc" id="L60">                    pedido.setCliente( rs.getString(&quot;cliente&quot;));</span>
+
+<span class="fc" id="L62">                    pedido.setFechaInicio( </span>
+<span class="fc" id="L63">                            rs.getDate(&quot;fechaInicio&quot;));</span>
+
+<span class="fc" id="L65">                    pedido.setFechaEntrega( rs.getDate(&quot;fechaEntrega&quot;));</span>
+
+<span class="fc" id="L67">                    pedido.setObservaciones( rs.getString(&quot;observaciones&quot;));</span>
+                    
+<span class="fc" id="L69">                    pedido.setCantidad(rs.getInt(&quot;cantidad&quot;));</span>
+
+                }
+
+<span class="nc" id="L73">            }catch(Exception e){</span>
+
+<span class="nc" id="L75">                System.out.println(</span>
+                        &quot;Error: &quot; + e);
+
+<span class="fc" id="L78">            }</span>
+
+<span class="fc" id="L80">            return pedido;</span>
+
+    }
+    
+    public void llenarNoPedido(JComboBox combo){
+
+        try{
+
+<span class="fc" id="L88">            Connection con = getConexion();</span>
+
+<span class="fc" id="L90">            String sql =</span>
+                    &quot;SELECT idPedido, cliente &quot;
+                  + &quot;FROM pedido&quot;;
+
+<span class="fc" id="L94">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L96">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L98">            combo.removeAllItems();</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            while(rs.next()){</span>
+
+<span class="fc" id="L102">                combo.addItem(rs.getInt(&quot;idPedido&quot;)</span>
+                        + &quot; - &quot;
+<span class="fc" id="L104">                        + rs.getString(&quot;cliente&quot;));</span>
+
+            }
+
+<span class="fc" id="L108">        }catch(Exception e){</span>
+
+<span class="fc" id="L110">            System.out.println(&quot;Error: &quot; + e);</span>
+
+<span class="fc" id="L112">        }</span>
+
+<span class="fc" id="L114">    }</span>
+    
+    public double mostrarMaterialesPorPedido(JTable tabla,int idPedido){
+
+<span class="fc" id="L118">        double subtotal = 0;</span>
+
+        try{
+
+<span class="fc" id="L122">            Connection con = getConexion();</span>
+
+<span class="fc" id="L124">            String sql =</span>
+                &quot;SELECT idRequisicion, &quot;
+              + &quot;fecha, &quot;
+              + &quot;total &quot;
+              + &quot;FROM requisicion &quot;
+              + &quot;WHERE idPedido = ?&quot;;
+
+<span class="fc" id="L131">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L133">            ps.setInt(1,idPedido);</span>
+
+<span class="fc" id="L135">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L137">            DefaultTableModel modelo =</span>
+                    (DefaultTableModel)
+<span class="fc" id="L139">                    tabla.getModel();</span>
+
+<span class="fc" id="L141">            modelo.setRowCount(0);</span>
+
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            while(rs.next()){</span>
+
+<span class="fc" id="L145">                double total =</span>
+<span class="fc" id="L146">                        rs.getDouble(</span>
+                                &quot;total&quot;);
+
+<span class="fc" id="L149">                subtotal += total;</span>
+
+<span class="fc" id="L151">                modelo.addRow(new Object[]{</span>
+
+<span class="fc" id="L153">                    rs.getDate(&quot;fecha&quot;),</span>
+<span class="fc" id="L154">                    rs.getInt(&quot;idRequisicion&quot;),</span>
+<span class="fc" id="L155">                    total</span>
+
+                });
+
+<span class="fc" id="L159">            }</span>
+
+<span class="fc" id="L161">        }catch(Exception e){</span>
+
+<span class="fc" id="L163">            System.out.println(</span>
+                    &quot;Error: &quot; + e);
+
+<span class="fc" id="L166">        }</span>
+
+<span class="fc" id="L168">        return subtotal;</span>
+
+    }
+    
+    public double mostrarManoObraPorPedido(JTable tabla, int idPedido){
+
+<span class="fc" id="L174">        double subtotal = 0;</span>
+
+        try{
+
+<span class="fc" id="L178">            Connection con = getConexion();</span>
+
+<span class="fc" id="L180">            String sql =</span>
+                &quot;SELECT t.idTarjeta, &quot;
+              + &quot;t.fecha, &quot;
+              + &quot;t.totalHoras, &quot;
+              + &quot;t.totalCosto, &quot;
+              + &quot;e.salarioHora &quot;
+              + &quot;FROM tarjetaTiempo t &quot;
+              + &quot;INNER JOIN empleado e &quot;
+              + &quot;ON t.idEmpleado = e.idEmpleado &quot;
+              + &quot;WHERE t.idPedido = ?&quot;;
+
+<span class="fc" id="L191">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L193">            ps.setInt(1,idPedido);</span>
+
+<span class="fc" id="L195">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L197">            DefaultTableModel modelo =(DefaultTableModel)tabla.getModel();</span>
+
+<span class="fc" id="L199">            modelo.setRowCount(0);</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            while(rs.next()){</span>
+
+<span class="fc" id="L203">                double costo = rs.getDouble(&quot;totalCosto&quot;);</span>
+
+<span class="fc" id="L205">                subtotal += costo;</span>
+
+<span class="fc" id="L207">                modelo.addRow(new Object[]{</span>
+
+<span class="fc" id="L209">                    rs.getDate(&quot;fecha&quot;),</span>
+<span class="fc" id="L210">                    rs.getInt(&quot;idTarjeta&quot;),</span>
+<span class="fc" id="L211">                    rs.getDouble(&quot;totalHoras&quot;),</span>
+<span class="fc" id="L212">                    rs.getDouble(&quot;salarioHora&quot;),</span>
+<span class="fc" id="L213">                    costo</span>
+
+                });
+
+<span class="fc" id="L217">            }</span>
+
+<span class="fc" id="L219">        }catch(Exception e){</span>
+
+<span class="fc" id="L221">            System.out.println(</span>
+                    &quot;Error: &quot; + e);
+
+<span class="fc" id="L224">        }</span>
+
+<span class="fc" id="L226">        return subtotal;</span>
+
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

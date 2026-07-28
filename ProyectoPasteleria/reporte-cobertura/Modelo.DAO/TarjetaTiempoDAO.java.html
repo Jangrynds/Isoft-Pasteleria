@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TarjetaTiempoDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">TarjetaTiempoDAO.java</span></div><h1>TarjetaTiempoDAO.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo.DAO;
+
+import Modelo.Clases.TarjetaTiempo;
+import Modelo.ConexionBD;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.function.Supplier;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import java.time.LocalTime;
+import java.time.Duration;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author ingri
+ */
+public class TarjetaTiempoDAO {
+
+    private final Supplier&lt;Connection&gt; connectionSupplier;
+
+    public TarjetaTiempoDAO() {
+<span class="nc" id="L30">        this(ConexionBD::getConexionBD);</span>
+<span class="nc" id="L31">    }</span>
+
+<span class="fc" id="L33">    public TarjetaTiempoDAO(Supplier&lt;Connection&gt; connectionSupplier) {</span>
+<span class="fc" id="L34">        this.connectionSupplier = connectionSupplier;</span>
+<span class="fc" id="L35">    }</span>
+
+    private Connection getConnection() {
+<span class="fc" id="L38">        return connectionSupplier.get();</span>
+    }
+
+    public void llenarEmpleados(JComboBox combo) {
+
+        try {
+
+<span class="fc" id="L45">            Connection con = getConnection();</span>
+
+<span class="fc" id="L47">            String sql = &quot;SELECT idEmpleado, nombre, apellidoP &quot;</span>
+                    + &quot;FROM empleado&quot;;
+
+<span class="fc" id="L50">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L52">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L54">            combo.removeAllItems();</span>
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L58">                combo.addItem(</span>
+<span class="fc" id="L59">                        rs.getInt(&quot;idEmpleado&quot;)</span>
+                        + &quot; - &quot;
+<span class="fc" id="L61">                        + rs.getString(&quot;nombre&quot;)</span>
+                        + &quot; &quot;
+<span class="fc" id="L63">                        + rs.getString(&quot;apellidoP&quot;));</span>
+
+            }
+
+<span class="fc" id="L67">        } catch (Exception e) {</span>
+
+<span class="fc" id="L69">            System.out.println(&quot;Error: &quot; + e);</span>
+
+<span class="fc" id="L71">        }</span>
+
+<span class="fc" id="L73">    }</span>
+
+    public void obtenerDatosEmpleado(int idEmpleado, JTextField txtIdEmpleado, JTextField txtTasaHora) {
+
+        try {
+
+<span class="fc" id="L79">            Connection con = getConnection();</span>
+
+<span class="fc" id="L81">            String sql = &quot;SELECT idEmpleado, salarioHora &quot;</span>
+                    + &quot;FROM empleado &quot;
+                    + &quot;WHERE idEmpleado = ?&quot;;
+
+<span class="fc" id="L85">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L87">            ps.setInt(1, idEmpleado);</span>
+
+<span class="fc" id="L89">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (rs.next()) {</span>
+
+<span class="fc" id="L93">                txtIdEmpleado.setText(</span>
+<span class="fc" id="L94">                        rs.getString(&quot;idEmpleado&quot;));</span>
+
+<span class="fc" id="L96">                txtTasaHora.setText(</span>
+<span class="fc" id="L97">                        rs.getString(&quot;salarioHora&quot;));</span>
+
+            }
+
+<span class="fc" id="L101">        } catch (Exception e) {</span>
+
+<span class="fc" id="L103">            System.out.println(&quot;Error: &quot; + e);</span>
+
+<span class="fc" id="L105">        }</span>
+
+<span class="fc" id="L107">    }</span>
+
+    public void llenarNoPedido(JComboBox combo) {
+        try {
+
+<span class="fc" id="L112">            Connection con = getConnection();</span>
+
+<span class="fc" id="L114">            String sql = &quot;SELECT idPedido, cliente &quot;</span>
+                    + &quot;FROM pedido&quot;;
+
+<span class="fc" id="L117">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L119">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L121">            combo.removeAllItems();</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L125">                combo.addItem(</span>
+<span class="fc" id="L126">                        rs.getInt(&quot;idPedido&quot;)</span>
+                        + &quot; - &quot;
+<span class="fc" id="L128">                        + rs.getString(&quot;cliente&quot;));</span>
+
+            }
+
+<span class="fc" id="L132">        } catch (Exception e) {</span>
+
+<span class="fc" id="L134">            System.out.println(&quot;Error: &quot; + e);</span>
+
+<span class="fc" id="L136">        }</span>
+<span class="fc" id="L137">    }</span>
+
+    public int guardarTarjetaTiempo(TarjetaTiempo tarjeta) {
+
+<span class="fc" id="L141">        int idTarjeta = 0;</span>
+
+        try {
+
+<span class="fc" id="L145">            Connection con = getConnection();</span>
+
+<span class="fc" id="L147">            String sql = &quot;INSERT INTO tarjetaTiempo &quot;</span>
+                    + &quot;(idEmpleado,idPedido,&quot;
+                    + &quot;fecha,observaciones,&quot;
+                    + &quot;totalHoras,totalCosto) &quot;
+                    + &quot;VALUES(?,?,?,?,?,?)&quot;;
+
+<span class="fc" id="L153">            PreparedStatement ps = con.prepareStatement(</span>
+                    sql,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+
+<span class="fc" id="L157">            ps.setInt(</span>
+                    1,
+<span class="fc" id="L159">                    tarjeta.getIdEmpleado());</span>
+
+<span class="fc" id="L161">            ps.setInt(</span>
+                    2,
+<span class="fc" id="L163">                    tarjeta.getIdPedido());</span>
+
+<span class="fc" id="L165">            ps.setDate(</span>
+                    3,
+                    new java.sql.Date(
+<span class="fc" id="L168">                            tarjeta.getFecha().getTime()));</span>
+
+<span class="fc" id="L170">            ps.setString(</span>
+                    4,
+<span class="fc" id="L172">                    tarjeta.getObservaciones());</span>
+
+<span class="fc" id="L174">            ps.setDouble(</span>
+                    5,
+<span class="fc" id="L176">                    tarjeta.getTotalHoras());</span>
+
+<span class="fc" id="L178">            ps.setDouble(</span>
+                    6,
+<span class="fc" id="L180">                    tarjeta.getTotalCosto());</span>
+
+<span class="fc" id="L182">            ps.executeUpdate();</span>
+
+<span class="fc" id="L184">            ResultSet rs = ps.getGeneratedKeys();</span>
+
+<span class="fc bfc" id="L186" title="All 2 branches covered.">            if (rs.next()) {</span>
+
+<span class="fc" id="L188">                idTarjeta = rs.getInt(1);</span>
+
+            }
+
+<span class="fc" id="L192">        } catch (Exception e) {</span>
+
+<span class="fc" id="L194">            System.out.println(</span>
+                    &quot;Error: &quot; + e);
+
+<span class="fc" id="L197">        }</span>
+
+<span class="fc" id="L199">        return idTarjeta;</span>
+
+    }
+
+    public boolean guardarDetalleTiempo(int idTarjeta, String dia, String horaInicio, String horaFin, double tiempoTotal, double tasaHora, double costoTotal) {
+
+        try {
+
+<span class="fc" id="L207">            Connection con = getConnection();</span>
+
+<span class="fc" id="L209">            String sql = &quot;INSERT INTO detalleTarjetaTiempo &quot;</span>
+                    + &quot;(idTarjeta,dia,&quot;
+                    + &quot;horaInicio,horaFin,&quot;
+                    + &quot;tiempoTotal,tasaHora,&quot;
+                    + &quot;costoTotal) &quot;
+                    + &quot;VALUES(?,?,?,?,?,?,?)&quot;;
+
+<span class="fc" id="L216">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L218">            ps.setInt(1, idTarjeta);</span>
+
+<span class="fc" id="L220">            ps.setString(2, dia);</span>
+
+<span class="fc" id="L222">            ps.setString(3, horaInicio);</span>
+
+<span class="fc" id="L224">            ps.setString(4, horaFin);</span>
+
+<span class="fc" id="L226">            ps.setDouble(5, tiempoTotal);</span>
+
+<span class="fc" id="L228">            ps.setDouble(6, tasaHora);</span>
+
+<span class="fc" id="L230">            ps.setDouble(7, costoTotal);</span>
+
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="fc" id="L234">        } catch (Exception e) {</span>
+
+<span class="fc" id="L236">            System.out.println(&quot;Error: &quot; + e);</span>
+
+        }
+
+<span class="fc" id="L240">        return false;</span>
+
+    }
+
+    public void mostrarTarjetas(JTable tabla) {
+
+        try {
+
+<span class="fc" id="L248">            Connection con = getConnection();</span>
+
+<span class="fc" id="L250">            String sql = &quot;SELECT t.idTarjeta, &quot;</span>
+                    + &quot;t.idEmpleado, &quot;
+                    + &quot;CONCAT(e.nombre,' ',e.apellidoP) empleado, &quot;
+                    + &quot;t.idPedido, &quot;
+                    + &quot;t.fecha, &quot;
+                    + &quot;t.totalHoras, &quot;
+                    + &quot;t.totalCosto, &quot;
+                    + &quot;t.observaciones &quot;
+                    + &quot;FROM tarjetaTiempo t &quot;
+                    + &quot;INNER JOIN empleado e &quot;
+                    + &quot;ON t.idEmpleado = e.idEmpleado&quot;;
+
+<span class="fc" id="L262">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L264">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L266">            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();</span>
+
+<span class="fc" id="L268">            modelo.setRowCount(0);</span>
+
+<span class="fc bfc" id="L270" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L272">                modelo.addRow(new Object[]{</span>
+<span class="fc" id="L273">                    rs.getInt(&quot;idTarjeta&quot;),</span>
+<span class="fc" id="L274">                    rs.getString(&quot;empleado&quot;),</span>
+<span class="fc" id="L275">                    rs.getInt(&quot;idEmpleado&quot;),</span>
+<span class="fc" id="L276">                    rs.getInt(&quot;idPedido&quot;),</span>
+<span class="fc" id="L277">                    rs.getDate(&quot;fecha&quot;),</span>
+<span class="fc" id="L278">                    rs.getDouble(&quot;totalHoras&quot;),</span>
+<span class="fc" id="L279">                    rs.getDouble(&quot;totalCosto&quot;),</span>
+<span class="fc" id="L280">                    rs.getString(&quot;observaciones&quot;)</span>
+
+                });
+
+            }
+
+<span class="fc" id="L286">        } catch (Exception e) {</span>
+
+<span class="fc" id="L288">            System.out.println(</span>
+                    &quot;Error: &quot; + e);
+
+<span class="fc" id="L291">        }</span>
+
+<span class="fc" id="L293">    }</span>
+
+    public void mostrarDetalleTarjeta(JTable tabla, int idTarjeta) {
+
+        try {
+
+<span class="fc" id="L299">            Connection con = getConnection();</span>
+
+<span class="fc" id="L301">            String sql = &quot;SELECT dia, &quot;</span>
+                    + &quot;horaInicio, &quot;
+                    + &quot;horaFin, &quot;
+                    + &quot;tiempoTotal, &quot;
+                    + &quot;tasaHora, &quot;
+                    + &quot;costoTotal &quot;
+                    + &quot;FROM detalleTarjetaTiempo &quot;
+                    + &quot;WHERE idTarjeta = ?&quot;;
+
+<span class="fc" id="L310">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L312">            ps.setInt(1, idTarjeta);</span>
+
+<span class="fc" id="L314">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L316">            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();</span>
+
+<span class="fc" id="L318">            modelo.setRowCount(0);</span>
+
+<span class="fc" id="L320">            int contador = 1;</span>
+
+<span class="fc bfc" id="L322" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L324">                modelo.addRow(new Object[]{</span>
+<span class="fc" id="L325">                    contador++,</span>
+<span class="fc" id="L326">                    rs.getString(&quot;dia&quot;),</span>
+<span class="fc" id="L327">                    rs.getString(&quot;horaInicio&quot;),</span>
+<span class="fc" id="L328">                    rs.getString(&quot;horaFin&quot;),</span>
+<span class="fc" id="L329">                    rs.getDouble(&quot;tiempoTotal&quot;),</span>
+<span class="fc" id="L330">                    rs.getDouble(&quot;tasaHora&quot;),</span>
+<span class="fc" id="L331">                    rs.getDouble(&quot;costoTotal&quot;)</span>
+
+                });
+
+            }
+
+<span class="fc" id="L337">        } catch (Exception e) {</span>
+
+<span class="fc" id="L339">            System.out.println(</span>
+                    &quot;Error: &quot; + e);
+
+<span class="fc" id="L342">        }</span>
+
+<span class="fc" id="L344">    }</span>
+
+    public TarjetaTiempo obtenerTarjetaTiempo(int idTarjeta) {
+
+<span class="fc" id="L348">        TarjetaTiempo tarjeta = new TarjetaTiempo();</span>
+
+        try {
+
+<span class="fc" id="L352">            Connection con = getConnection();</span>
+
+<span class="fc" id="L354">            String sql = &quot;SELECT * &quot;</span>
+                    + &quot;FROM tarjetaTiempo &quot;
+                    + &quot;WHERE idTarjeta = ?&quot;;
+
+<span class="fc" id="L358">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L360">            ps.setInt(1, idTarjeta);</span>
+
+<span class="fc" id="L362">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L364" title="All 2 branches covered.">            if (rs.next()) {</span>
+
+<span class="fc" id="L366">                tarjeta.setIdTarjeta(rs.getInt(&quot;idTarjeta&quot;));</span>
+
+<span class="fc" id="L368">                tarjeta.setIdEmpleado(rs.getInt(&quot;idEmpleado&quot;));</span>
+
+<span class="fc" id="L370">                tarjeta.setIdPedido(rs.getInt(&quot;idPedido&quot;));</span>
+
+<span class="fc" id="L372">                tarjeta.setFecha(rs.getDate(&quot;fecha&quot;));</span>
+
+<span class="fc" id="L374">                tarjeta.setObservaciones(rs.getString(&quot;observaciones&quot;));</span>
+
+<span class="fc" id="L376">                tarjeta.setTotalHoras(rs.getDouble(&quot;totalHoras&quot;));</span>
+
+<span class="fc" id="L378">                tarjeta.setTotalCosto(rs.getDouble(&quot;totalCosto&quot;));</span>
+
+            }
+
+<span class="fc" id="L382">        } catch (Exception e) {</span>
+
+<span class="fc" id="L384">            System.out.println(&quot;Error: &quot; + e);</span>
+
+<span class="fc" id="L386">        }</span>
+
+<span class="fc" id="L388">        return tarjeta;</span>
+
+    }
+
+    public boolean actualizarTarjeta(
+            TarjetaTiempo tarjeta) {
+
+        try {
+
+<span class="fc" id="L397">            Connection con = getConnection();</span>
+
+<span class="fc" id="L399">            String sql = &quot;UPDATE tarjetaTiempo &quot;</span>
+                    + &quot;SET idEmpleado=?, &quot;
+                    + &quot;idPedido=?, &quot;
+                    + &quot;fecha=?, &quot;
+                    + &quot;observaciones=?, &quot;
+                    + &quot;totalHoras=?, &quot;
+                    + &quot;totalCosto=? &quot;
+                    + &quot;WHERE idTarjeta=?&quot;;
+
+<span class="fc" id="L408">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L410">            ps.setInt(1,</span>
+<span class="fc" id="L411">                    tarjeta.getIdEmpleado());</span>
+
+<span class="fc" id="L413">            ps.setInt(2,</span>
+<span class="fc" id="L414">                    tarjeta.getIdPedido());</span>
+
+<span class="fc" id="L416">            ps.setDate(3,</span>
+                    new java.sql.Date(
+<span class="fc" id="L418">                            tarjeta.getFecha().getTime()));</span>
+
+<span class="fc" id="L420">            ps.setString(4,</span>
+<span class="fc" id="L421">                    tarjeta.getObservaciones());</span>
+
+<span class="fc" id="L423">            ps.setDouble(5,</span>
+<span class="fc" id="L424">                    tarjeta.getTotalHoras());</span>
+
+<span class="fc" id="L426">            ps.setDouble(6,</span>
+<span class="fc" id="L427">                    tarjeta.getTotalCosto());</span>
+
+<span class="fc" id="L429">            ps.setInt(7,</span>
+<span class="fc" id="L430">                    tarjeta.getIdTarjeta());</span>
+
+<span class="pc bpc" id="L432" title="1 of 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="fc" id="L434">        } catch (Exception e) {</span>
+
+<span class="fc" id="L436">            System.out.println(</span>
+                    &quot;Error: &quot; + e);
+
+<span class="fc" id="L439">            return false;</span>
+
+        }
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductoDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">ProductoDAO.java</span></div><h1>ProductoDAO.java</h1><pre class="source lang-java linenums">package Modelo.DAO;
+
+import Modelo.Clases.Producto;
+import Modelo.ConexionBD;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.function.Supplier;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+public class ProductoDAO {
+
+    private final Supplier&lt;Connection&gt; connectionSupplier;
+
+    public ProductoDAO() {
+<span class="nc" id="L20">        this(ConexionBD::getConexionBD);</span>
+<span class="nc" id="L21">    }</span>
+
+<span class="fc" id="L23">    public ProductoDAO(Supplier&lt;Connection&gt; connectionSupplier) {</span>
+<span class="fc" id="L24">        this.connectionSupplier = connectionSupplier;</span>
+<span class="fc" id="L25">    }</span>
+
+    private Connection getConnection() {
+<span class="fc" id="L28">        return connectionSupplier.get();</span>
+    }
+
+    public void mostrarProductos(JTable tabla) {
+<span class="fc" id="L32">        Connection con = getConnection();</span>
+<span class="fc" id="L33">        DefaultTableModel modelo = new DefaultTableModel();</span>
+
+<span class="fc" id="L35">        modelo.addColumn(&quot;ID Producto&quot;);</span>
+<span class="fc" id="L36">        modelo.addColumn(&quot;Nombre del producto&quot;);</span>
+<span class="fc" id="L37">        modelo.addColumn(&quot;Categoría&quot;);</span>
+<span class="fc" id="L38">        modelo.addColumn(&quot;Tamaño&quot;);</span>
+<span class="fc" id="L39">        modelo.addColumn(&quot;Descripción&quot;);</span>
+<span class="fc" id="L40">        modelo.addColumn(&quot;Precio de venta&quot;);</span>
+<span class="fc" id="L41">        modelo.addColumn(&quot;Estado&quot;);</span>
+
+<span class="fc" id="L43">        tabla.setModel(modelo);</span>
+
+<span class="fc" id="L45">        String sql = &quot;SELECT p.idProducto, &quot;</span>
+                + &quot;p.nombreProducto, &quot;
+                + &quot;c.nombreCategoria, &quot;
+                + &quot;p.tamano, &quot;
+                + &quot;p.descripcion, &quot;
+                + &quot;p.precioVenta, &quot;
+                + &quot;e.nombreEstado &quot;
+                + &quot;FROM producto p &quot;
+                + &quot;INNER JOIN categoriaproducto c &quot;
+                + &quot;ON p.idCategoria = c.idCategoria &quot;
+                + &quot;INNER JOIN estadoProducto e &quot;
+                + &quot;ON p.idEstadoProducto = e.idEstadoProducto&quot;;
+
+<span class="fc" id="L58">        String datos[] = new String[100];</span>
+
+        try {
+<span class="fc" id="L61">            Statement st = con.createStatement();</span>
+<span class="fc" id="L62">            ResultSet rs = st.executeQuery(sql);</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L65">                datos[0] = rs.getString(&quot;idProducto&quot;);</span>
+<span class="fc" id="L66">                datos[1] = rs.getString(&quot;nombreProducto&quot;);</span>
+<span class="fc" id="L67">                datos[2] = rs.getString(&quot;nombreCategoria&quot;);</span>
+<span class="fc" id="L68">                datos[3] = rs.getString(&quot;tamano&quot;);</span>
+<span class="fc" id="L69">                datos[4] = rs.getString(&quot;descripcion&quot;);</span>
+<span class="fc" id="L70">                datos[5] = rs.getString(&quot;precioVenta&quot;);</span>
+<span class="fc" id="L71">                datos[6] = rs.getString(&quot;nombreEstado&quot;);</span>
+
+<span class="fc" id="L73">                modelo.addRow(datos);</span>
+            }
+
+<span class="fc" id="L76">            tabla.setModel(modelo);</span>
+
+<span class="fc" id="L78">        } catch (Exception e) {</span>
+<span class="fc" id="L79">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L80">        }</span>
+<span class="fc" id="L81">    }</span>
+
+    public void guardarProducto(Producto prod) {
+<span class="fc" id="L84">        Connection con = getConnection();</span>
+
+<span class="fc" id="L86">        String sql = &quot;INSERT INTO producto &quot;</span>
+                + &quot;(nombreProducto, idCategoria, tamano, descripcion, &quot;
+                + &quot;precioVenta, idEstadoProducto) &quot;
+                + &quot;VALUES (?, ?, ?, ?, ?, ?)&quot;;
+
+        try {
+<span class="fc" id="L92">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L94">            ps.setString(1, prod.getNombreProducto());</span>
+<span class="fc" id="L95">            ps.setInt(2, prod.getIdCategoria());</span>
+<span class="fc" id="L96">            ps.setString(3, prod.getTamano());</span>
+<span class="fc" id="L97">            ps.setString(4, prod.getDescripcion());</span>
+<span class="fc" id="L98">            ps.setDouble(5, prod.getPrecioVenta());</span>
+<span class="fc" id="L99">            ps.setInt(6, prod.getIdEstadoProducto());</span>
+
+<span class="fc" id="L101">            ps.executeUpdate();</span>
+
+<span class="nc" id="L103">            JOptionPane.showMessageDialog(null,</span>
+                    &quot;Producto guardado correctamente&quot;);
+
+<span class="fc" id="L106">        } catch (Exception e) {</span>
+<span class="nc" id="L107">            JOptionPane.showMessageDialog(null,</span>
+                    &quot;Error al guardar: &quot; + e);
+<span class="nc" id="L109">        }</span>
+<span class="nc" id="L110">    }</span>
+
+    public boolean editarProducto(Producto prod) {
+        try {
+<span class="fc" id="L114">            Connection con = getConnection();</span>
+
+<span class="fc" id="L116">            String sql = &quot;UPDATE producto SET nombreProducto=?, idCategoria=?, tamano=?, descripcion=?, precioVenta=?, idEstadoProducto=? WHERE idProducto=?&quot;;</span>
+
+<span class="fc" id="L118">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L120">            ps.setString(1, prod.getNombreProducto());</span>
+<span class="fc" id="L121">            ps.setInt(2, prod.getIdCategoria());</span>
+<span class="fc" id="L122">            ps.setString(3, prod.getTamano());</span>
+<span class="fc" id="L123">            ps.setString(4, prod.getDescripcion());</span>
+<span class="fc" id="L124">            ps.setDouble(5, prod.getPrecioVenta());</span>
+<span class="fc" id="L125">            ps.setInt(6, prod.getIdEstadoProducto());</span>
+<span class="fc" id="L126">            ps.setInt(7, prod.getIdProducto());</span>
+
+<span class="fc" id="L128">            ps.executeUpdate();</span>
+
+<span class="fc" id="L130">            return true;</span>
+
+<span class="fc" id="L132">        } catch (Exception e) {</span>
+<span class="fc" id="L133">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L134">            return false;</span>
+        }
+    }
+
+    public boolean eliminarProducto(int idProducto) {
+        try {
+<span class="fc" id="L140">            Connection con = getConnection();</span>
+
+<span class="fc" id="L142">            String sql = &quot;DELETE FROM producto WHERE idProducto=?&quot;;</span>
+
+<span class="fc" id="L144">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L146">            ps.setInt(1, idProducto);</span>
+
+<span class="fc" id="L148">            ps.executeUpdate();</span>
+
+<span class="fc" id="L150">            return true;</span>
+
+<span class="fc" id="L152">        } catch (Exception e) {</span>
+<span class="fc" id="L153">            System.out.println(&quot;Error: &quot; + e);</span>
+
+<span class="nc" id="L155">            JOptionPane.showMessageDialog(null,</span>
+                    &quot;No se puede eliminar este producto porque está asociado a pedidos registrados.&quot;);
+
+<span class="nc" id="L158">            return false;</span>
+        }
+    }
+
+    public void mostrarNombresProductos(JComboBox cmbNombreProductos) {
+        try {
+<span class="fc" id="L164">            Connection con = getConnection();</span>
+
+<span class="fc" id="L166">            String sql = &quot;SELECT * FROM producto ORDER BY idProducto&quot;;</span>
+
+<span class="fc" id="L168">            Statement st = con.createStatement();</span>
+
+<span class="fc" id="L170">            ResultSet rs = st.executeQuery(sql);</span>
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L173">                cmbNombreProductos.addItem(rs.getString(&quot;nombreProducto&quot;));</span>
+            }
+
+<span class="fc" id="L176">        } catch (Exception e) {</span>
+<span class="fc" id="L177">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L178">        }</span>
+<span class="fc" id="L179">    }</span>
+
+    public double obtenerPrecioProducto(String nombreProducto) {
+        try {
+<span class="fc" id="L183">            Connection con = getConnection();</span>
+
+<span class="fc" id="L185">            String sql = &quot;SELECT precioVenta &quot;</span>
+                    + &quot;FROM producto &quot;
+                    + &quot;WHERE nombreProducto=?&quot;;
+
+<span class="fc" id="L189">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L191">            ps.setString(1, nombreProducto);</span>
+
+<span class="fc" id="L193">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L196">                return rs.getDouble(&quot;precioVenta&quot;);</span>
+            }
+
+<span class="fc" id="L199">        } catch (Exception e) {</span>
+<span class="fc" id="L200">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L201">        }</span>
+
+<span class="fc" id="L203">        return 0;</span>
+    }
+
+    public int obtenerIdProducto(String nombreProducto) {
+        try {
+<span class="fc" id="L208">            Connection con = getConnection();</span>
+
+<span class="fc" id="L210">            String sql = &quot;SELECT idProducto &quot;</span>
+                    + &quot;FROM producto &quot;
+                    + &quot;WHERE nombreProducto=?&quot;;
+
+<span class="fc" id="L214">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L216">            ps.setString(1, nombreProducto);</span>
+
+<span class="fc" id="L218">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L221">                return rs.getInt(&quot;idProducto&quot;);</span>
+            }
+
+<span class="fc" id="L224">        } catch (Exception e) {</span>
+<span class="fc" id="L225">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L226">        }</span>
+
+<span class="fc" id="L228">        return -1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

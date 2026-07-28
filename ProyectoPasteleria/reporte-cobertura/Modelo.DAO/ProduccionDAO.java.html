@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProduccionDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoPasteleria Coverage</a> &gt; <a href="index.source.html" class="el_package">Modelo.DAO</a> &gt; <span class="el_source">ProduccionDAO.java</span></div><h1>ProduccionDAO.java</h1><pre class="source lang-java linenums">package Modelo.DAO;
+
+import Modelo.Clases.Pedido;
+import Modelo.ConexionBD;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.util.function.Supplier;
+
+public class ProduccionDAO {
+
+    private final Supplier&lt;Connection&gt; connectionSupplier;
+
+    public ProduccionDAO() {
+<span class="nc" id="L19">        this(ConexionBD::getConexionBD);</span>
+<span class="nc" id="L20">    }</span>
+
+<span class="fc" id="L22">    public ProduccionDAO(Supplier&lt;Connection&gt; connectionSupplier) {</span>
+<span class="fc" id="L23">        this.connectionSupplier = connectionSupplier;</span>
+<span class="fc" id="L24">    }</span>
+
+    private Connection getConnection() {
+<span class="fc" id="L27">        return connectionSupplier.get();</span>
+    }
+
+    public void mostrarPedidos(JTable tabla) {
+<span class="fc" id="L31">        Connection con = getConnection();</span>
+<span class="fc" id="L32">        DefaultTableModel modelo = new DefaultTableModel();</span>
+
+<span class="fc" id="L34">        modelo.addColumn(&quot;No. Pedido&quot;);</span>
+<span class="fc" id="L35">        modelo.addColumn(&quot;Cliente&quot;);</span>
+<span class="fc" id="L36">        modelo.addColumn(&quot;Fecha Inicio&quot;);</span>
+<span class="fc" id="L37">        modelo.addColumn(&quot;Fecha Entrega&quot;);</span>
+<span class="fc" id="L38">        modelo.addColumn(&quot;Estado&quot;);</span>
+<span class="fc" id="L39">        modelo.addColumn(&quot;Observaciones&quot;);</span>
+
+<span class="fc" id="L41">        tabla.setModel(modelo);</span>
+
+<span class="fc" id="L43">        String sql = &quot;SELECT p.idPedido, &quot;</span>
+                + &quot;p.cliente, &quot;
+                + &quot;p.fechaInicio, &quot;
+                + &quot;p.fechaEntrega, &quot;
+                + &quot;p.observaciones, &quot;
+                + &quot;e.nombreEstadoPedido &quot;
+                + &quot;FROM pedido p &quot;
+                + &quot;INNER JOIN estadoPedido e &quot;
+                + &quot;ON p.idEstadoPedido = e.idEstadoPedido&quot;;
+
+<span class="fc" id="L53">        String datos[] = new String[6];</span>
+
+        try {
+<span class="fc" id="L56">            Statement st = con.createStatement();</span>
+<span class="fc" id="L57">            ResultSet rs = st.executeQuery(sql);</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L60">                datos[0] = rs.getString(&quot;idPedido&quot;);</span>
+<span class="fc" id="L61">                datos[1] = rs.getString(&quot;cliente&quot;);</span>
+<span class="fc" id="L62">                datos[2] = rs.getString(&quot;fechaInicio&quot;);</span>
+<span class="fc" id="L63">                datos[3] = rs.getString(&quot;fechaEntrega&quot;);</span>
+<span class="fc" id="L64">                datos[4] = rs.getString(&quot;nombreEstadoPedido&quot;);</span>
+<span class="fc" id="L65">                datos[5] = rs.getString(&quot;observaciones&quot;);</span>
+
+<span class="fc" id="L67">                modelo.addRow(datos);</span>
+            }
+
+<span class="fc" id="L70">            tabla.setModel(modelo);</span>
+
+<span class="fc" id="L72">        } catch (Exception e) {</span>
+<span class="fc" id="L73">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">    }</span>
+
+    public int guardarPedido(Pedido ped) {
+        try {
+<span class="fc" id="L79">            Connection con = getConnection();</span>
+
+<span class="fc" id="L81">            String sql = &quot;INSERT INTO pedido &quot;</span>
+                    + &quot;(cliente, fechaInicio, fechaEntrega, &quot;
+                    + &quot;observaciones, idEstadoPedido) &quot;
+                    + &quot;VALUES (?, ?, ?, ?, ?)&quot;;
+
+<span class="fc" id="L86">            PreparedStatement ps = con.prepareStatement(</span>
+                    sql,
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+
+<span class="fc" id="L90">            ps.setString(1, ped.getCliente());</span>
+
+<span class="fc" id="L92">            ps.setDate(2, new java.sql.Date(</span>
+<span class="fc" id="L93">                    ped.getFechaInicio().getTime()));</span>
+
+<span class="fc" id="L95">            ps.setDate(3, new java.sql.Date(</span>
+<span class="fc" id="L96">                    ped.getFechaEntrega().getTime()));</span>
+
+<span class="fc" id="L98">            ps.setString(4, ped.getObservaciones());</span>
+
+<span class="fc" id="L100">            ps.setInt(5, ped.getIdEstadoPedido());</span>
+
+<span class="fc" id="L102">            ps.executeUpdate();</span>
+
+<span class="fc" id="L104">            ResultSet rs = ps.getGeneratedKeys();</span>
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L107">                return rs.getInt(1);</span>
+            }
+
+<span class="fc" id="L110">            return -1;</span>
+
+<span class="fc" id="L112">        } catch (Exception e) {</span>
+<span class="fc" id="L113">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L114">            return -1;</span>
+        }
+    }
+
+    public void mostrarDetallePedido(JTable tabla, int idPedido) {
+<span class="fc" id="L119">        Connection con = getConnection();</span>
+<span class="fc" id="L120">        DefaultTableModel modelo = new DefaultTableModel();</span>
+
+<span class="fc" id="L122">        modelo.addColumn(&quot;ID&quot;);</span>
+<span class="fc" id="L123">        modelo.addColumn(&quot;Producto&quot;);</span>
+<span class="fc" id="L124">        modelo.addColumn(&quot;Cantidad&quot;);</span>
+<span class="fc" id="L125">        modelo.addColumn(&quot;Precio&quot;);</span>
+<span class="fc" id="L126">        modelo.addColumn(&quot;Subtotal&quot;);</span>
+
+<span class="fc" id="L128">        tabla.setModel(modelo);</span>
+
+<span class="fc" id="L130">        String sql = &quot;SELECT p.idProducto, &quot;</span>
+                + &quot;p.nombreProducto, &quot;
+                + &quot;dp.cantidad, &quot;
+                + &quot;p.precioVenta &quot;
+                + &quot;FROM detallePedido dp &quot;
+                + &quot;INNER JOIN producto p &quot;
+                + &quot;ON dp.idProducto = p.idProducto &quot;
+                + &quot;WHERE dp.idPedido = ?&quot;;
+
+<span class="fc" id="L139">        String datos[] = new String[5];</span>
+
+        try {
+<span class="fc" id="L142">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L143">            ps.setInt(1, idPedido);</span>
+
+<span class="fc" id="L145">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L148">                datos[0] = rs.getString(&quot;idProducto&quot;);</span>
+<span class="fc" id="L149">                datos[1] = rs.getString(&quot;nombreProducto&quot;);</span>
+<span class="fc" id="L150">                datos[2] = rs.getString(&quot;cantidad&quot;);</span>
+<span class="fc" id="L151">                datos[3] = rs.getString(&quot;precioVenta&quot;);</span>
+
+<span class="fc" id="L153">                double cantidad = rs.getDouble(&quot;cantidad&quot;);</span>
+<span class="fc" id="L154">                double precio = rs.getDouble(&quot;precioVenta&quot;);</span>
+<span class="fc" id="L155">                double subtotal = cantidad * precio;</span>
+
+<span class="fc" id="L157">                datos[4] = String.valueOf(subtotal);</span>
+
+<span class="fc" id="L159">                modelo.addRow(datos);</span>
+<span class="fc" id="L160">            }</span>
+
+<span class="fc" id="L162">            tabla.setModel(modelo);</span>
+
+<span class="fc" id="L164">        } catch (Exception e) {</span>
+<span class="fc" id="L165">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L166">        }</span>
+<span class="fc" id="L167">    }</span>
+
+    public boolean guardarDetallePedido(int idPedido, int idProducto, int cantidad) {
+        try {
+<span class="fc" id="L171">            Connection con = getConnection();</span>
+
+<span class="fc" id="L173">            String sql = &quot;INSERT INTO detallePedido &quot;</span>
+                    + &quot;(idPedido, idProducto, cantidad) &quot;
+                    + &quot;VALUES (?, ?, ?)&quot;;
+
+<span class="fc" id="L177">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L179">            ps.setInt(1, idPedido);</span>
+<span class="fc" id="L180">            ps.setInt(2, idProducto);</span>
+<span class="fc" id="L181">            ps.setInt(3, cantidad);</span>
+
+<span class="fc" id="L183">            ps.executeUpdate();</span>
+
+<span class="fc" id="L185">            return true;</span>
+
+<span class="fc" id="L187">        } catch (Exception e) {</span>
+<span class="fc" id="L188">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L189">            return false;</span>
+        }
+    }
+
+    public boolean eliminarDetallePedido(int idPedido) {
+        try {
+<span class="fc" id="L195">            Connection con = getConnection();</span>
+
+<span class="fc" id="L197">            String sql = &quot;DELETE FROM detallePedido WHERE idPedido=?&quot;;</span>
+
+<span class="fc" id="L199">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L200">            ps.setInt(1, idPedido);</span>
+
+<span class="fc" id="L202">            ps.executeUpdate();</span>
+
+<span class="fc" id="L204">            return true;</span>
+
+<span class="fc" id="L206">        } catch (Exception e) {</span>
+<span class="fc" id="L207">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L208">            return false;</span>
+        }
+    }
+
+    public boolean eliminarPedido(int idPedido) {
+        try {
+<span class="fc" id="L214">            Connection con = getConnection();</span>
+
+<span class="fc" id="L216">            String sql = &quot;DELETE FROM pedido WHERE idPedido=?&quot;;</span>
+
+<span class="fc" id="L218">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L219">            ps.setInt(1, idPedido);</span>
+
+<span class="fc" id="L221">            ps.executeUpdate();</span>
+
+<span class="fc" id="L223">            return true;</span>
+
+<span class="fc" id="L225">        } catch (Exception e) {</span>
+<span class="fc" id="L226">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L227">            return false;</span>
+        }
+    }
+
+    public boolean editarPedido(Pedido ped) {
+        try {
+<span class="fc" id="L233">            Connection con = getConnection();</span>
+
+<span class="fc" id="L235">            String sql = &quot;UPDATE pedido SET &quot;</span>
+                    + &quot;cliente=?, &quot;
+                    + &quot;fechaEntrega=?, &quot;
+                    + &quot;observaciones=?, &quot;
+                    + &quot;idEstadoPedido=? &quot;
+                    + &quot;WHERE idPedido=?&quot;;
+
+<span class="fc" id="L242">            PreparedStatement ps = con.prepareStatement(sql);</span>
+
+<span class="fc" id="L244">            ps.setString(1, ped.getCliente());</span>
+<span class="fc" id="L245">            ps.setDate(2, new java.sql.Date(ped.getFechaEntrega().getTime()));</span>
+<span class="fc" id="L246">            ps.setString(3, ped.getObservaciones());</span>
+<span class="fc" id="L247">            ps.setInt(4, ped.getIdEstadoPedido());</span>
+<span class="fc" id="L248">            ps.setInt(5, ped.getIdPedido());</span>
+
+<span class="fc" id="L250">            ps.executeUpdate();</span>
+
+<span class="fc" id="L252">            return true;</span>
+
+<span class="fc" id="L254">        } catch (Exception e) {</span>
+<span class="fc" id="L255">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L256">            return false;</span>
+        }
+    }
+
+    public void llenarComboPedidos(JComboBox combo) {
+        try {
+<span class="fc" id="L262">            Connection con = getConnection();</span>
+
+<span class="fc" id="L264">            String sql = &quot;SELECT idPedido, cliente FROM pedido&quot;;</span>
+
+<span class="fc" id="L266">            PreparedStatement ps = con.prepareStatement(sql);</span>
+<span class="fc" id="L267">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L269">            combo.removeAllItems();</span>
+
+<span class="fc bfc" id="L271" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L272">                combo.addItem(</span>
+<span class="fc" id="L273">                        rs.getInt(&quot;idPedido&quot;)</span>
+                        + &quot; - &quot;
+<span class="fc" id="L275">                        + rs.getString(&quot;cliente&quot;));</span>
+            }
+
+<span class="fc" id="L278">        } catch (Exception e) {</span>
+<span class="fc" id="L279">            System.out.println(&quot;Error: &quot; + e);</span>
+<span class="fc" id="L280">        }</span>
+<span class="fc" id="L281">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
